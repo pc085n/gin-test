@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.1.1 (Python 3.10.12 on linux)" generated="20230829 21:06:38.148" rpa="false" schemaversion="4">
+<suite id="s1" name="Api" source="/opt/app/gin/api.robot">
+<test id="s1-t1" name="1#To access gin" line="8">
+<kw name="GET" library="RequestsLibrary">
+<var>${response}</var>
+<arg>https://dcaf-cmts-demo-kiali.cci-dev.com/kiali</arg>
+<doc>Sends a GET request.</doc>
+<msg timestamp="20230829 21:06:38.504" level="INFO">GET Request : url=https://dcaf-cmts-demo-kiali.cci-dev.com/kiali (redirected) 
+ path_url=/kiali 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20230829 21:06:38.505" level="INFO">GET Response : url=https://dcaf-cmts-demo-auth.cci-dev.com/?rd=https%3A%2F%2Fdcaf-cmts-demo-kiali.cci-dev.com%2Fkiali&amp;rm=GET 
+ status=200, reason=OK 
+ headers={'Content-Length': '1001', 'Content-Security-Policy': "default-src 'self'; frame-src 'none'; object-src 'none'; style-src 'self' 'nonce-1PETy0Z5t6TUa0LalC2dWEv5WgQiDKTm'; frame-ancestors 'none'; base-uri 'self'", 'Content-Type': 'text/html; charset=utf-8', 'Date': 'Tue, 29 Aug 2023 21:06:37 GMT', 'Permissions-Policy': 'interest-cohort=()', 'Referrer-Policy': 'strict-origin-when-cross-origin', 'X-Content-Type-Options': 'nosniff', 'X-Frame-Options': 'SAMEORIGIN', 'X-Xss-Protection': '1; mode=block'} 
+ body=&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;base href="https://dcaf-cmts-demo-auth.cci-dev.com/" /&gt;
+  &lt;meta property="csp-nonce" content="1PETy0Z5t6TUa0LalC2dWEv5WgQiDKTm" /&gt;
+  &lt;meta charset="utf-8" /&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
+  &lt;meta name="theme-color" content="#000000" /&gt;
+  &lt;meta name="description" content="Authelia login portal for your apps" /&gt;
+  &lt;link rel="manifest" href="./manifest.json" /&gt;
+  &lt;link rel="icon" href="./favicon.ico" /&gt;
+  &lt;title&gt;Login - Authelia&lt;/title&gt;
+  &lt;script type="module" crossorigin src="./static/js/index.fad9e36b.js"&gt;&lt;/script&gt;
+  &lt;link rel="stylesheet" href="./static/css/index.40feef90.css"&gt;
+&lt;/head&gt;
+
+&lt;body
+    data-basepath=""
+    data-duoselfenrollment="false"
+    data-logooverride="false"
+    data-rememberme="true"
+    data-resetpassword="true"
+    data-resetpasswordcustomurl=""
+    data-theme="dark"
+&gt;
+  &lt;noscript&gt;You need to enable JavaScript to run this app.&lt;/noscript&gt;
+  &lt;div id="root"&gt;&lt;/div&gt;
+  
+&lt;/body&gt;
+&lt;/html&gt;
+ 
+ </msg>
+<msg timestamp="20230829 21:06:38.505" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230829 21:06:38.288" endtime="20230829 21:06:38.505"/>
+</kw>
+<status status="PASS" starttime="20230829 21:06:38.288" endtime="20230829 21:06:38.506"/>
+</test>
+<test id="s1-t2" name="2#To get all models from database" line="10">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20230829 21:06:38.507" level="INFO">Creating Session using : alias=mysession, url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20230829 21:06:38.507" endtime="20230829 21:06:38.508"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20230829 21:06:38.537" level="INFO">GET Request : url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models/ (redirected) 
+ path_url=/compiler/v1/db/models/ 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20230829 21:06:38.538" level="INFO">GET Response : url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models 
+ status=200, reason=OK 
+ headers={'Content-Length': '628', 'Content-Type': 'application/json', 'Date': 'Tue, 29 Aug 2023 21:06:38 GMT', 'Server': 'APISIX/3.4.0'} 
+ body={"result":"Success","message":"List of models.","data":{"listOfModels":[{"name":"main","service_url":"zip:file:/opt/app/csars/cluster.csar!/cluster/main.yaml","version":"tosca_simple_yaml_1_3"},{"name":"cluster_input_service","service_url":"zip:file:/opt/app/csars/cluster-resource.csar!/cluster_input_service.yaml","version":"tosca_simple_yaml_1_3"},{"name":"dcaf_input_service","service_url":"zip:file:/opt/app/csars/dcaf-resource.csar!/dcaf_input_service.yaml","version":"tosca_simple_yaml_1_3"},{"name":"dcaf_service","service_url":"zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml","version":"tick_profile_1_0"}]}} 
+ </msg>
+<msg timestamp="20230829 21:06:38.538" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'dcaf-cmts-demo-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(
+/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'dcaf-cmts-demo-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20230829 21:06:38.538" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230829 21:06:38.508" endtime="20230829 21:06:38.538"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20230829 21:06:38.539" level="INFO">{'result': 'Success', 'message': 'List of models.', 'data': {'listOfModels': [{'name': 'main', 'service_url': 'zip:file:/opt/app/csars/cluster.csar!/cluster/main.yaml', 'version': 'tosca_simple_yaml_1_3'}, {'name': 'cluster_input_service', 'service_url': 'zip:file:/opt/app/csars/cluster-resource.csar!/cluster_input_service.yaml', 'version': 'tosca_simple_yaml_1_3'}, {'name': 'dcaf_input_service', 'service_url': 'zip:file:/opt/app/csars/dcaf-resource.csar!/dcaf_input_service.yaml', 'version': 'tosca_simple_yaml_1_3'}, {'name': 'dcaf_service', 'service_url': 'zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml', 'version': 'tick_profile_1_0'}]}}</msg>
+<status status="PASS" starttime="20230829 21:06:38.538" endtime="20230829 21:06:38.539"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20230829 21:06:38.540" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20230829 21:06:38.540" endtime="20230829 21:06:38.540"/>
+</kw>
+<status status="PASS" starttime="20230829 21:06:38.507" endtime="20230829 21:06:38.541"/>
+</test>
+<test id="s1-t3" name="3#To get all models from database with metadata" line="18">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20230829 21:06:38.542" level="INFO">Creating Session using : alias=mysession, url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20230829 21:06:38.541" endtime="20230829 21:06:38.542"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/metadata</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20230829 21:06:38.561" level="INFO">GET Request : url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models/metadata 
+ path_url=/compiler/v1/db/models/metadata 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20230829 21:06:38.561" level="INFO">GET Response : url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models/metadata 
+ status=200, reason=OK 
+ headers={'Content-Length': '931', 'Content-Type': 'application/json', 'Date': 'Tue, 29 Aug 2023 21:06:38 GMT', 'Server': 'APISIX/3.4.0'} 
+ body={"result":"Success","message":"List of model with metadata.","data":{"models":[{"description":"Service template for k8s cluster resources","metadata":{"argowfsteps":"multi-wfc","gwec-image":"kuber-helm","model-name":"cluster"},"service_url":"zip:file:/opt/app/csars/cluster.csar!/cluster/main.yaml"},{"metadata":{"model-name":"cluster-input-resource"},"service_url":"zip:file:/opt/app/csars/cluster-resource.csar!/cluster_input_service.yaml"},{"metadata":{"model-name":"dcaf-input-resource"},"service_url":"zip:file:/opt/app/csars/dcaf-resource.csar!/dcaf_input_service.yaml"},{"description":"Dynamic Network Control loop service with TICK for Fixed Wireless Customers","metadata":{"argowfsteps":"multi-wfc","deployable":"true","gwec-image":"gwec-helm-with-aws-credentials","model-name":"dcaf-cmts","topic-name":"cci.dcaf2.POLICY_EVENT_REPORTER_OUTPUT"},"service_url":"zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml"}]}} 
+ </msg>
+<msg timestamp="20230829 21:06:38.561" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'dcaf-cmts-demo-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20230829 21:06:38.561" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230829 21:06:38.542" endtime="20230829 21:06:38.562"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20230829 21:06:38.563" level="INFO">{'result': 'Success', 'message': 'List of model with metadata.', 'data': {'models': [{'description': 'Service template for k8s cluster resources', 'metadata': {'argowfsteps': 'multi-wfc', 'gwec-image': 'kuber-helm', 'model-name': 'cluster'}, 'service_url': 'zip:file:/opt/app/csars/cluster.csar!/cluster/main.yaml'}, {'metadata': {'model-name': 'cluster-input-resource'}, 'service_url': 'zip:file:/opt/app/csars/cluster-resource.csar!/cluster_input_service.yaml'}, {'metadata': {'model-name': 'dcaf-input-resource'}, 'service_url': 'zip:file:/opt/app/csars/dcaf-resource.csar!/dcaf_input_service.yaml'}, {'description': 'Dynamic Network Control loop service with TICK for Fixed Wireless Customers', 'metadata': {'argowfsteps': 'multi-wfc', 'deployable': 'true', 'gwec-image': 'gwec-helm-with-aws-credentials', 'model-name': 'dcaf-cmts', 'topic-name': 'cci.dcaf2.POLICY_EVENT_REPORTER_OUTPUT'}, 'service_url': 'zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml'}]}}</msg>
+<status status="PASS" starttime="20230829 21:06:38.562" endtime="20230829 21:06:38.563"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20230829 21:06:38.563" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20230829 21:06:38.563" endtime="20230829 21:06:38.563"/>
+</kw>
+<status status="PASS" starttime="20230829 21:06:38.541" endtime="20230829 21:06:38.564"/>
+</test>
+<test id="s1-t4" name="4#To get specific TOSCA model data" line="23">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20230829 21:06:38.565" level="INFO">Creating Session using : alias=mysession, url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20230829 21:06:38.565" endtime="20230829 21:06:38.565"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/dcaf_service</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20230829 21:06:38.583" level="INFO">GET Request : url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models/dcaf_service 
+ path_url=/compiler/v1/db/models/dcaf_service 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20230829 21:06:38.583" level="INFO">GET Response : url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models/dcaf_service 
+ status=200, reason=OK 
+ headers={'Content-Length': '451', 'Content-Type': 'application/json', 'Date': 'Tue, 29 Aug 2023 21:06:38 GMT', 'Server': 'APISIX/3.4.0'} 
+ body={"result":"Success","message":"List of models by its name.","data":{"model":[{"description":"Dynamic Network Control loop service with TICK for Fixed Wireless Customers","metadata":{"argowfsteps":"multi-wfc","deployable":"true","gwec-image":"gwec-helm-with-aws-credentials","model-name":"dcaf-cmts","topic-name":"cci.dcaf2.POLICY_EVENT_REPORTER_OUTPUT"},"name":"dcaf_service","namespace":"zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml"}]}} 
+ </msg>
+<msg timestamp="20230829 21:06:38.583" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'dcaf-cmts-demo-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20230829 21:06:38.584" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230829 21:06:38.566" endtime="20230829 21:06:38.584"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20230829 21:06:38.584" level="INFO">{'result': 'Success', 'message': 'List of models by its name.', 'data': {'model': [{'description': 'Dynamic Network Control loop service with TICK for Fixed Wireless Customers', 'metadata': {'argowfsteps': 'multi-wfc', 'deployable': 'true', 'gwec-image': 'gwec-helm-with-aws-credentials', 'model-name': 'dcaf-cmts', 'topic-name': 'cci.dcaf2.POLICY_EVENT_REPORTER_OUTPUT'}, 'name': 'dcaf_service', 'namespace': 'zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml'}]}}</msg>
+<status status="PASS" starttime="20230829 21:06:38.584" endtime="20230829 21:06:38.585"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20230829 21:06:38.585" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20230829 21:06:38.585" endtime="20230829 21:06:38.585"/>
+</kw>
+<status status="PASS" starttime="20230829 21:06:38.564" endtime="20230829 21:06:38.586"/>
+</test>
+<test id="s1-t5" name="5#To get nodeTemplates from DB based on substitute directive" line="28">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20230829 21:06:38.587" level="INFO">Creating Session using : alias=mysession, url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20230829 21:06:38.587" endtime="20230829 21:06:38.587"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/substitute/gin.nodes.MetricsServer</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20230829 21:06:38.612" level="INFO">GET Request : url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models/substitute/gin.nodes.MetricsServer 
+ path_url=/compiler/v1/db/models/substitute/gin.nodes.MetricsServer 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20230829 21:06:38.612" level="INFO">GET Response : url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models/substitute/gin.nodes.MetricsServer 
+ status=200, reason=OK 
+ headers={'Content-Length': '183', 'Content-Type': 'application/json', 'Date': 'Tue, 29 Aug 2023 21:06:38 GMT', 'Server': 'APISIX/3.4.0'} 
+ body={"result":"Success","message":"List of node templates based on substitute directive.","data":[[{"servicetemplate":{"nodetemplates":[{"name":"subs__tick__influxdb.yaml.influxdb"}]}}]]} 
+ </msg>
+<msg timestamp="20230829 21:06:38.612" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'dcaf-cmts-demo-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20230829 21:06:38.613" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230829 21:06:38.588" endtime="20230829 21:06:38.613"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20230829 21:06:38.614" level="INFO">{'result': 'Success', 'message': 'List of node templates based on substitute directive.', 'data': [[{'servicetemplate': {'nodetemplates': [{'name': 'subs__tick__influxdb.yaml.influxdb'}]}}]]}</msg>
+<status status="PASS" starttime="20230829 21:06:38.613" endtime="20230829 21:06:38.614"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20230829 21:06:38.615" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20230829 21:06:38.614" endtime="20230829 21:06:38.615"/>
+</kw>
+<status status="PASS" starttime="20230829 21:06:38.586" endtime="20230829 21:06:38.615"/>
+</test>
+<test id="s1-t6" name="6#To get nodeTemplates from DB based on a select directive" line="33">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20230829 21:06:38.616" level="INFO">Creating Session using : alias=mysession, url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20230829 21:06:38.616" endtime="20230829 21:06:38.616"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/select/k8s:Cluster</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20230829 21:06:38.644" level="INFO">GET Request : url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models/select/k8s:Cluster 
+ path_url=/compiler/v1/db/models/select/k8s:Cluster 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20230829 21:06:38.644" level="INFO">GET Response : url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models/select/k8s:Cluster 
+ status=200, reason=OK 
+ headers={'Content-Length': '577', 'Content-Type': 'application/json', 'Date': 'Tue, 29 Aug 2023 21:06:38 GMT', 'Server': 'APISIX/3.4.0'} 
+ body={"result":"Success","message":"List of node templates based on select directive.","data":[[{"name":"main","service_url":"zip:file:/opt/app/csars/cluster.csar!/cluster/main.yaml","servicetemplate":{"nodetemplates":[{"name":"cluster"},{"name":"cluster_host"},{"name":"kubectl"},{"name":"cluster__subs__aws_cluster_function_service.yaml.cluster_site_host"},{"name":"common__resources__aws_resource.yaml.aws"},{"name":"cluster_resource_inputs"},{"name":"cluster__subs__aws_cluster_function_service.yaml.vpc"},{"name":"cluster__subs__aws_cluster_function_service.yaml.subnet"}]}}]]} 
+ </msg>
+<msg timestamp="20230829 21:06:38.644" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'dcaf-cmts-demo-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20230829 21:06:38.644" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230829 21:06:38.617" endtime="20230829 21:06:38.644"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20230829 21:06:38.645" level="INFO">{'result': 'Success', 'message': 'List of node templates based on select directive.', 'data': [[{'name': 'main', 'service_url': 'zip:file:/opt/app/csars/cluster.csar!/cluster/main.yaml', 'servicetemplate': {'nodetemplates': [{'name': 'cluster'}, {'name': 'cluster_host'}, {'name': 'kubectl'}, {'name': 'cluster__subs__aws_cluster_function_service.yaml.cluster_site_host'}, {'name': 'common__resources__aws_resource.yaml.aws'}, {'name': 'cluster_resource_inputs'}, {'name': 'cluster__subs__aws_cluster_function_service.yaml.vpc'}, {'name': 'cluster__subs__aws_cluster_function_service.yaml.subnet'}]}}]]}</msg>
+<status status="PASS" starttime="20230829 21:06:38.644" endtime="20230829 21:06:38.645"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20230829 21:06:38.646" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20230829 21:06:38.646" endtime="20230829 21:06:38.646"/>
+</kw>
+<status status="PASS" starttime="20230829 21:06:38.616" endtime="20230829 21:06:38.646"/>
+</test>
+<test id="s1-t7" name="7#To get nodeTemplates from model" line="38">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20230829 21:06:38.648" level="INFO">Creating Session using : alias=mysession, url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20230829 21:06:38.648" endtime="20230829 21:06:38.648"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/dcaf_service/nodetemplates</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20230829 21:06:38.667" level="INFO">GET Request : url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models/dcaf_service/nodetemplates 
+ path_url=/compiler/v1/db/models/dcaf_service/nodetemplates 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20230829 21:06:38.667" level="INFO">GET Response : url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models/dcaf_service/nodetemplates 
+ status=200, reason=OK 
+ headers={'Content-Length': '651', 'Content-Type': 'application/json', 'Date': 'Tue, 29 Aug 2023 21:06:38 GMT', 'Server': 'APISIX/3.4.0'} 
+ body={"result":"Success","message":"List of node templates.","data":{"model":[{"name":"dcaf_service","service_url":"zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml","servicetemplate":{"nodetemplates":[{"name":"subs__tick__kapacitor.yaml.kapacitor"},{"name":"metrics_server"},{"name":"subs__tick__chronograf.yaml.chronograf"},{"name":"analytics_namespace"},{"name":"cmts_adapter"},{"name":"cmts"},{"name":"dcaf_resource"},{"name":"metrics_processor"},{"name":"visualizer"},{"name":"subs__tick__influxdb.yaml.influxdb"},{"name":"dcaf_cluster"},{"name":"subs__tick__telegraf.yaml.telegraf"},{"name":"collector"},{"name":"kubesystem_namespace"}]}}]}} 
+ </msg>
+<msg timestamp="20230829 21:06:38.667" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'dcaf-cmts-demo-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20230829 21:06:38.667" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230829 21:06:38.648" endtime="20230829 21:06:38.667"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20230829 21:06:38.668" level="INFO">{'result': 'Success', 'message': 'List of node templates.', 'data': {'model': [{'name': 'dcaf_service', 'service_url': 'zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml', 'servicetemplate': {'nodetemplates': [{'name': 'subs__tick__kapacitor.yaml.kapacitor'}, {'name': 'metrics_server'}, {'name': 'subs__tick__chronograf.yaml.chronograf'}, {'name': 'analytics_namespace'}, {'name': 'cmts_adapter'}, {'name': 'cmts'}, {'name': 'dcaf_resource'}, {'name': 'metrics_processor'}, {'name': 'visualizer'}, {'name': 'subs__tick__influxdb.yaml.influxdb'}, {'name': 'dcaf_cluster'}, {'name': 'subs__tick__telegraf.yaml.telegraf'}, {'name': 'collector'}, {'name': 'kubesystem_namespace'}]}}]}}</msg>
+<status status="PASS" starttime="20230829 21:06:38.668" endtime="20230829 21:06:38.668"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20230829 21:06:38.669" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20230829 21:06:38.669" endtime="20230829 21:06:38.669"/>
+</kw>
+<status status="PASS" starttime="20230829 21:06:38.647" endtime="20230829 21:06:38.670"/>
+</test>
+<test id="s1-t8" name="8#To get substitution nodes from model" line="43">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20230829 21:06:38.671" level="INFO">Creating Session using : alias=mysession, url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20230829 21:06:38.671" endtime="20230829 21:06:38.671"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/dcaf_service/abstract</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20230829 21:06:38.690" level="INFO">GET Request : url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models/dcaf_service/abstract 
+ path_url=/compiler/v1/db/models/dcaf_service/abstract 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20230829 21:06:38.690" level="INFO">GET Response : url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models/dcaf_service/abstract 
+ status=200, reason=OK 
+ headers={'Content-Length': '1064', 'Content-Type': 'application/json', 'Date': 'Tue, 29 Aug 2023 21:06:38 GMT', 'Server': 'APISIX/3.4.0'} 
+ body={"result":"Success","message":"List of substitution mapping nodes.","data":{"substitution-nodes":[{"name":"dcaf_service","service_url":"zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml","servicetemplate":{"nodetemplates":[{"directives":["substitute"],"name":"metrics_server","nodetype":{"parentname":"gin.nodes.MetricsServer"},"nodetypename":"MetricsServer_K8s"},{"directives":["substitute"],"name":"dcaf_resource","nodetype":{"parentname":"tosca.nodes.Root"},"nodetypename":"Resource"},{"directives":["substitute"],"name":"metrics_processor","nodetype":{"parentname":"gin.nodes.MetricsStreamProcessor"},"nodetypename":"MetricsStreamProcessor_K8s"},{"directives":["substitute"],"name":"visualizer","nodetype":{"parentname":"gin.nodes.MetricsDashboard"},"nodetypename":"MetricsDashboard_K8s"},{"directives":["select"],"name":"dcaf_cluster","nodetype":{"parentname":"tosca.nodes.Root"},"nodetypename":"k8s:Cluster"},{"directives":["substitute"],"name":"collector","nodetype":{"parentname":"gin.nodes.DataCollector"},"nodetypename":"DataCollector_K8s"}]}}]}} 
+ </msg>
+<msg timestamp="20230829 21:06:38.690" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'dcaf-cmts-demo-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20230829 21:06:38.690" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230829 21:06:38.672" endtime="20230829 21:06:38.690"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20230829 21:06:38.691" level="INFO">{'result': 'Success', 'message': 'List of substitution mapping nodes.', 'data': {'substitution-nodes': [{'name': 'dcaf_service', 'service_url': 'zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml', 'servicetemplate': {'nodetemplates': [{'directives': ['substitute'], 'name': 'metrics_server', 'nodetype': {'parentname': 'gin.nodes.MetricsServer'}, 'nodetypename': 'MetricsServer_K8s'}, {'directives': ['substitute'], 'name': 'dcaf_resource', 'nodetype': {'parentname': 'tosca.nodes.Root'}, 'nodetypename': 'Resource'}, {'directives': ['substitute'], 'name': 'metrics_processor', 'nodetype': {'parentname': 'gin.nodes.MetricsStreamProcessor'}, 'nodetypename': 'MetricsStreamProcessor_K8s'}, {'directives': ['substitute'], 'name': 'visualizer', 'nodetype': {'parentname': 'gin.nodes.MetricsDashboard'}, 'nodetypename': 'MetricsDashboard_K8s'}, {'directives': ['select'], 'name': 'dcaf_cluster', 'nodetype': {'parentname': 'tosca.nodes.Root'}, 'nodetypename': 'k8s:Cluster'}, {'directives': ['substitute'], 'name': 'collector', 'nodetype': {'parentname': 'gin.nodes.DataCollector'}, 'nodetypename': 'DataCollector_K8s'}]}}]}}</msg>
+<status status="PASS" starttime="20230829 21:06:38.691" endtime="20230829 21:06:38.691"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20230829 21:06:38.692" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20230829 21:06:38.692" endtime="20230829 21:06:38.692"/>
+</kw>
+<status status="PASS" starttime="20230829 21:06:38.670" endtime="20230829 21:06:38.693"/>
+</test>
+<test id="s1-t9" name="9#To find dangling requirements of a given model" line="48">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20230829 21:06:38.694" level="INFO">Creating Session using : alias=mysession, url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20230829 21:06:38.694" endtime="20230829 21:06:38.694"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/dcaf_service/dangling_requirements</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20230829 21:06:38.801" level="INFO">GET Request : url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models/dcaf_service/dangling_requirements 
+ path_url=/compiler/v1/db/models/dcaf_service/dangling_requirements 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20230829 21:06:38.802" level="INFO">GET Response : url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/compiler/v1/db/models/dcaf_service/dangling_requirements 
+ status=200, reason=OK 
+ headers={'Content-Length': '606', 'Content-Type': 'application/json', 'Date': 'Tue, 29 Aug 2023 21:06:38 GMT', 'Server': 'APISIX/3.4.0'} 
+ body={"result":"Success","message":"Dangling requirements from dcaf_service model.","data":[{"name":"dcaf_service","service_url":"zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml","servicetemplate":{"nodetemplates":[{"analytics_namespace":{"requirements":[]},"cmts":{"requirements":[]},"cmts_adapter":{"requirements":[]},"collector":{"requirements":[]},"kubesystem_namespace":{"requirements":[]},"metrics_processor":{"requirements":[]},"metrics_server":{"requirements":[{"name":"metrics_server","occurrences":{"lower":"1","upper":"1"},"targetnodetypename":null}]},"visualizer":{"requirements":[]}}]}}]} 
+ </msg>
+<msg timestamp="20230829 21:06:38.802" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'dcaf-cmts-demo-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20230829 21:06:38.802" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230829 21:06:38.694" endtime="20230829 21:06:38.802"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20230829 21:06:38.803" level="INFO">{'result': 'Success', 'message': 'Dangling requirements from dcaf_service model.', 'data': [{'name': 'dcaf_service', 'service_url': 'zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml', 'servicetemplate': {'nodetemplates': [{'analytics_namespace': {'requirements': []}, 'cmts': {'requirements': []}, 'cmts_adapter': {'requirements': []}, 'collector': {'requirements': []}, 'kubesystem_namespace': {'requirements': []}, 'metrics_processor': {'requirements': []}, 'metrics_server': {'requirements': [{'name': 'metrics_server', 'occurrences': {'lower': '1', 'upper': '1'}, 'targetnodetypename': None}]}, 'visualizer': {'requirements': []}}]}}]}</msg>
+<status status="PASS" starttime="20230829 21:06:38.802" endtime="20230829 21:06:38.803"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20230829 21:06:38.804" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20230829 21:06:38.803" endtime="20230829 21:06:38.804"/>
+</kw>
+<status status="PASS" starttime="20230829 21:06:38.693" endtime="20230829 21:06:38.804"/>
+</test>
+<test id="s1-t10" name="10#To get all instances from database" line="53">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/so/v1/instances</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20230829 21:06:38.806" level="INFO">Creating Session using : alias=mysession, url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/so/v1/instances, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20230829 21:06:38.806" endtime="20230829 21:06:38.806"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20230829 21:06:38.837" level="INFO">GET Request : url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/so/v1/instances/ (redirected) 
+ path_url=/so/v1/instances/ 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20230829 21:06:38.838" level="INFO">GET Response : url=https://dcaf-cmts-demo-apisix-gateway.cci-dev.com/so/v1/instances 
+ status=200, reason=OK 
+ headers={'Content-Length': '746', 'Content-Type': 'application/json', 'Date': 'Tue, 29 Aug 2023 21:06:38 GMT', 'Server': 'APISIX/3.4.0'} 
+ body=[{"uid":"0x2173d","name":"cluster_input_service_2025768086","dependent_instance":["cluster_804630267"],"version":"1.0","grammarversion":"tick_profile_1_0,tosca_simple_yaml_1_3","properties":{},"vertexes":[]},{"uid":"0x21762","name":"cluster_804630267","dependent_instance":["cmts41"],"version":"1.0","grammarversion":"tick_profile_1_0,tosca_simple_yaml_1_3","properties":{},"vertexes":[]},{"uid":"0x21834","name":"dcaf_input_service_4005840426","dependent_instance":["cmts41"],"version":"1.0","grammarversion":"tick_profile_1_0,tosca_simple_yaml_1_3","properties":{},"vertexes":[]},{"uid":"0x21a53","name":"cmts41","dependent_instance":[""],"version":"1.0","grammarversion":"tick_profile_1_0,tosca_simple_yaml_1_3","properties":{},"vertexes":[]}] 
+ </msg>
+<msg timestamp="20230829 21:06:38.838" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'dcaf-cmts-demo-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(
+/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'dcaf-cmts-demo-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20230829 21:06:38.838" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230829 21:06:38.806" endtime="20230829 21:06:38.838"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20230829 21:06:38.839" level="INFO">[{'uid': '0x2173d', 'name': 'cluster_input_service_2025768086', 'dependent_instance': ['cluster_804630267'], 'version': '1.0', 'grammarversion': 'tick_profile_1_0,tosca_simple_yaml_1_3', 'properties': {}, 'vertexes': []}, {'uid': '0x21762', 'name': 'cluster_804630267', 'dependent_instance': ['cmts41'], 'version': '1.0', 'grammarversion': 'tick_profile_1_0,tosca_simple_yaml_1_3', 'properties': {}, 'vertexes': []}, {'uid': '0x21834', 'name': 'dcaf_input_service_4005840426', 'dependent_instance': ['cmts41'], 'version': '1.0', 'grammarversion': 'tick_profile_1_0,tosca_simple_yaml_1_3', 'properties': {}, 'vertexes': []}, {'uid': '0x21a53', 'name': 'cmts41', 'dependent_instance': [''], 'version': '1.0', 'grammarversion': 'tick_profile_1_0,tosca_simple_yaml_1_3', 'properties': {}, 'vertexes': []}]</msg>
+<status status="PASS" starttime="20230829 21:06:38.838" endtime="20230829 21:06:38.839"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20230829 21:06:38.840" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20230829 21:06:38.840" endtime="20230829 21:06:38.840"/>
+</kw>
+<status status="PASS" starttime="20230829 21:06:38.805" endtime="20230829 21:06:38.840"/>
+</test>
+<status status="PASS" starttime="20230829 21:06:38.149" endtime="20230829 21:06:38.841"/>
+</suite>
+<statistics>
+<total>
+<stat pass="10" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="10" fail="0" skip="0" id="s1" name="Api">Api</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
