@@ -5,6 +5,13 @@ Library    Collections
 
 *** Variables ***
 
+${aws} =  tango
+${model-name} =  nonrtric
+${model-upd-url} =  https://${aws}-apisix-gateway.cci-dev.com/compiler/v1/model
+${instance-name} =  dcaf91
+${instance-url} =  https://${aws}-apisix-gateway.cci-dev.com/so/v1/instances
+${schema-url} =  https://${aws}-apisix-gateway.cci-dev.com/so/v1/db
+
 ${model-string}  SEPARATOR=\n  {
 ...  "url": "/opt/app/csars/nonrtric.csar",
 ...  "resolve": true,
@@ -25,7 +32,7 @@ ${delete-model-string}  SEPARATOR=\n  {
 ...  }
 
 ${instance-string}  SEPARATOR=\n  {
-...  "name": "dcaf91",
+...  "name": "${instance-name}",
 ...  "output": "dcaf-cmts.json",
 ...  "generate-workflow": true,
 ...  "execute-workflow": true,
@@ -48,55 +55,75 @@ ${instance-string}  SEPARATOR=\n  {
 ...  "service": "zip:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml"
 ...  }
 
-#${schema-string}  SEPARATOR=\n  {
-#...  "schemaName": "your_schema_name",
-#...  "fields": [
-#...    {
-#...      "fieldName": "field1",
-#...      "fieldType": "string",
-#...      "isRequired": true
-#...    }
-#...  ]
-#...  }
+${instance-wf-string}  SEPARATOR=\n  {
+...  "list-steps-only": false,
+...  "execute-policy": true
+...  }
+
+${schema-string}  SEPARATOR=\n  {
+...  "schemaName": "dummy1",
+...  "fields": {
+...      "fieldName": "purpose",
+...      "fieldType": "string",
+...      "isRequired": true
+...      }
+...  }
 
 *** Test Cases ***
 
 #COMPILER API#
-#10#To compile model-USE PERSONAL INSTANCE
-#    ${compile-body} =  Convert String to JSON  ${model-string}
-#    Create Session    mysession    https://tango-apisix-gateway.cci-dev.com/compiler/v1/model    verify=false
-#    ${header}=    Create Dictionary  Content-Type=application/json
-#    ${response}=  POST On Session  mysession  /compile  json=${compile-body}  headers=${header}
-#    log  ${response.json()}
-#    Should Be Equal As Strings  ${response.status_code}  200
-#11#To save model-USE PERSONAL INSTANCE
+#11#To save model-USE PERSONAL GIN
 #    ${save-body} =  Convert String to JSON  ${model-string}
-#    Create Session    mysession    https://tango-apisix-gateway.cci-dev.com/compiler/v1/model/db    verify=false
-#    ${header}=    Create Dictionary  Content-Type=application/json
-#    ${response}=  POST On Session  mysession  /save  json=${save-body}  headers=${header}
+#    Create Session    mysession    ${model-upd-url}    verify=false
+#    ${response}=  POST On Session  mysession  /db/save  json=${save-body} 
 #    log  ${response.json()}
 #    Should Be Equal As Strings  ${response.status_code}  200
-#12#To delete a model-USE PERSONAL INSTANCE
+#    Should Contain  ${response.json()['message']}  Compiled and save model
+#10#To compile model-USE PERSONAL GIN
+#    ${compile-body} =  Convert String to JSON  ${model-string}
+#    Create Session    mysession    ${model-upd-url}    verify=false
+#    ${response}=  POST On Session  mysession  /compile  json=${compile-body} 
+#    log  ${response.json()}
+#    Should Be Equal As Strings  ${response.status_code}  200
+#    Should Contain  ${response.json()['message']}  Compiled model   
+#12#To delete a model-USE PERSONAL GIN
 #    ${delete-model} =  Convert String to JSON  ${delete-model-string}
-#    Create Session    mysession    https://tango-apisix-gateway.cci-dev.com/compiler/v1/model/db    verify=false
-#    ${header}=    Create Dictionary  Content-Type=application/json
-#    ${response}=  DELETE On Session  mysession  /nonrtric  json=${delete-model}  headers=${header}
+#    Create Session    mysession    ${model-upd-url}    verify=false
+#    ${response}=  DELETE On Session  mysession  /db/${model-name}  json=${delete-model}  
 #    log  ${response.json()}
 #    Should Be Equal As Strings  ${response.status_code}  200
+#    Should Contain  ${response.json()['message']}  deleted from the database
 #SO API#
-#25#To create instance-USE PERSONAL INSTANCE
+#25#To create instance-USE PERSONAL GIN
 #    ${save-body} =  Convert String to JSON  ${instance-string}
-#    Create Session    mysession    https://tango-apisix-gateway.cci-dev.com/so/v1/instances    verify=false
-#    ${header}=    Create Dictionary  Content-Type=application/json
-#    ${response}=  POST On Session  mysession  /createInstance  json=${save-body}  headers=${header}
+#    Create Session    mysession    ${instance-url}    verify=false
+#    ${response}=  POST On Session  mysession  /createInstance  json=${save-body} 
 #    log  ${response.json()}
 #    Should Be True  '${response.status_code}'=='200' or '${response.status_code}'=='202'
-#26#To execute workflow steps of a model which has already been saved in the database-USE PERSONAL INSTANCE
-#27#To create any schema-USE PERSONAL INSTANCE 
-#28#To delete specific instance-USE PERSONAL INSTANCE 
-#    Create Session    mysession    https://tango-apisix-gateway.cci-dev.com/so/v1/instances    verify=false
-#    ${header}=    Create Dictionary  Content-Type=application/json
-#    ${response}=  DELETE On Session  mysession  /deleteInstance/dcaf91  headers=${header}
+#    Should Contain  ${response.json()['message']}  will be deployed
+#26#To execute workflow steps of a model which has already been saved in the database-USE PERSONAL GIN
+#    ${deploy-body} =  Convert String to JSON  ${instance-wf-string}
+#    Create Session    mysession    ${instance-url}    verify=false
+#    ${response}=  POST On Session  mysession  /${instance-name}/workflows/deploy  json=${deploy-body}  
 #    log  ${response.json()}
 #    Should Be Equal As Strings  ${response.status_code}  200
-#29#To delete specific policy of an instance-USE PERSONAL INSTANCE
+#    Should Contain  ${response.json()['message']}  will be deployed
+#29#To delete specific policy of an instance-USE PERSONAL GIN
+#    Create Session    mysession    ${instance-url}    verify=false
+#    ${response}=  DELETE On Session  mysession  /${instance-name}/policy/packet_volume_limiter  
+#    log  ${response.json()}
+#    Should Be Equal As Strings  ${response.status_code}  200
+#    Should Contain  ${response.json()['message']}  stopped successfully
+#28#To delete specific instance-USE PERSONAL GIN
+#    Create Session    mysession    ${instance-url}    verify=false
+#    ${response}=  DELETE On Session  mysession  /deleteInstance/${instance-name}    
+#    log  ${response.json()}
+#    Should Be Equal As Strings  ${response.status_code}  200
+#    Should Contain  ${response.json()['message']}  will be deleted
+#27#To create any schema-USE PERSONAL GIN
+#    ${save-schema} =  Convert String to JSON  ${schema-string}
+#    Create Session    mysession    ${schema-url}    verify=false
+#    ${response}=  PUT On Session  mysession  /schema/create  json=${save-schema} 
+#    log  ${response.json()}
+#    Should Be Equal As Strings  ${response.status_code}  200
+#    Should Contain  ${response.json()['message']}  The database schema has been created
