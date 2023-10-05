@@ -5,10 +5,10 @@ Library    Collections
 
 *** Variables ***
 
-${aws} =  tango
+${aws} =  amsterdam
 ${model-name} =  nonrtric
 ${model-upd-url} =  https://${aws}-apisix-gateway.cci-dev.com/compiler/v1/model
-${instance-name} =  dcaf91
+${instance-name} =  malitpe
 ${instance-url} =  https://${aws}-apisix-gateway.cci-dev.com/so/v1/instances
 ${schema-url} =  https://${aws}-apisix-gateway.cci-dev.com/so/v1/db
 
@@ -94,20 +94,20 @@ ${schema-string}  SEPARATOR=\n  {
 #    Should Be Equal As Strings  ${response.status_code}  200
 #    Should Contain  ${response.json()['message']}  deleted from the database
 #SO API#
-#25#To create instance-USE PERSONAL GIN
-#    ${save-body} =  Convert String to JSON  ${instance-string}
-#    Create Session    mysession    ${instance-url}    verify=false
-#    ${response}=  POST On Session  mysession  /createInstance  json=${save-body} 
-#    log  ${response.json()}
-#    Should Be True  '${response.status_code}'=='200' or '${response.status_code}'=='202'
-#    Should Contain  ${response.json()['message']}  will be deployed
-#26#To execute workflow steps of a model which has already been saved in the database-USE PERSONAL GIN
-#    ${deploy-body} =  Convert String to JSON  ${instance-wf-string}
-#    Create Session    mysession    ${instance-url}    verify=false
-#    ${response}=  POST On Session  mysession  /${instance-name}/workflows/deploy  json=${deploy-body}  
-#    log  ${response.json()}
-#    Should Be Equal As Strings  ${response.status_code}  200
-#    Should Contain  ${response.json()['message']}  will be deployed
+25#To create instance-USE PERSONAL GIN
+    ${save-body} =  Convert String to JSON  ${instance-string}
+    Create Session    mysession    ${instance-url}    verify=false
+    ${response}=  POST On Session  mysession  /createInstance  json=${save-body} 
+    log  ${response.json()}
+    Should Be True  '${response.status_code}'=='200' or '${response.status_code}'=='202'
+    Should Contain  ${response.json()['message']}  will be deployed
+26#To execute workflow steps of a model which has already been saved in the database-USE PERSONAL GIN
+    ${deploy-body} =  Convert String to JSON  ${instance-wf-string}
+    Create Session    mysession    ${instance-url}    verify=false
+    ${response}=  POST On Session  mysession  /${instance-name}/workflows/deploy  json=${deploy-body}  
+    log  ${response.json()}
+    Should Be Equal As Strings  ${response.status_code}  200
+    Should Contain  ${response.json()['message']}  will be deployed
 #29#To delete specific policy of an instance-USE PERSONAL GIN
 #    Create Session    mysession    ${instance-url}    verify=false
 #    ${response}=  DELETE On Session  mysession  /${instance-name}/policy/packet_volume_limiter  

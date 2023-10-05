@@ -1,0 +1,752 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.1.1 (Python 3.10.12 on linux)" generated="20231005 17:42:58.061" rpa="false" schemaversion="4">
+<suite id="s1" name="Main" source="/opt/app/gin/Tests/Main.robot">
+<test id="s1-t1" name="Validate GIN deployment" line="41">
+<kw name="Query Data">
+<kw name="Get All Models From DB" library="Action">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>${model-url}</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20231005 17:42:58.222" level="INFO">Creating Session using : alias=mysession, url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20231005 17:42:58.222" endtime="20231005 17:42:58.222"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20231005 17:42:58.251" level="INFO">GET Request : url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models/ (redirected) 
+ path_url=/compiler/v1/db/models/ 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20231005 17:42:58.251" level="INFO">GET Response : url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models 
+ status=200, reason=OK 
+ headers={'Content-Length': '883', 'Content-Type': 'application/json', 'Date': 'Thu, 05 Oct 2023 17:42:58 GMT', 'Server': 'APISIX/3.5.0'} 
+ body={"result":"Success","message":"List of models.","data":{"listOfModels":[{"name":"nonrtric","service_url":"zip:file:/opt/app/csars/nonrtric.csar!/nonrtric.yaml","version":"tosca_simple_yaml_1_3"},{"name":"main","service_url":"zip:file:/opt/app/csars/cluster.csar!/cluster/main.yaml","version":"tosca_simple_yaml_1_3"},{"name":"cluster_input_service","service_url":"zip:file:/opt/app/csars/cluster-resource.csar!/cluster_input_service.yaml","version":"tosca_simple_yaml_1_3"},{"name":"dcaf_input_service","service_url":"zip:file:/opt/app/csars/dcaf-resource.csar!/dcaf_input_service.yaml","version":"tosca_simple_yaml_1_3"},{"name":"dcaf_service","service_url":"zip:file:/opt/app/csars/dcaf-cmts-util.csar!/dcaf_service.yaml","version":"tick_profile_1_0"},{"name":"dcaf_service","service_url":"zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml","version":"tick_profile_1_0"}]}} 
+ </msg>
+<msg timestamp="20231005 17:42:58.251" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'amsterdam-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(
+/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'amsterdam-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20231005 17:42:58.251" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.223" endtime="20231005 17:42:58.252"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231005 17:42:58.253" level="INFO">{'result': 'Success', 'message': 'List of models.', 'data': {'listOfModels': [{'name': 'nonrtric', 'service_url': 'zip:file:/opt/app/csars/nonrtric.csar!/nonrtric.yaml', 'version': 'tosca_simple_yaml_1_3'}, {'name': 'main', 'service_url': 'zip:file:/opt/app/csars/cluster.csar!/cluster/main.yaml', 'version': 'tosca_simple_yaml_1_3'}, {'name': 'cluster_input_service', 'service_url': 'zip:file:/opt/app/csars/cluster-resource.csar!/cluster_input_service.yaml', 'version': 'tosca_simple_yaml_1_3'}, {'name': 'dcaf_input_service', 'service_url': 'zip:file:/opt/app/csars/dcaf-resource.csar!/dcaf_input_service.yaml', 'version': 'tosca_simple_yaml_1_3'}, {'name': 'dcaf_service', 'service_url': 'zip:file:/opt/app/csars/dcaf-cmts-util.csar!/dcaf_service.yaml', 'version': 'tick_profile_1_0'}, {'name': 'dcaf_service', 'service_url': 'zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml', 'version': 'tick_profile_1_0'}]}}</msg>
+<status status="PASS" starttime="20231005 17:42:58.252" endtime="20231005 17:42:58.253"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20231005 17:42:58.254" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.253" endtime="20231005 17:42:58.254"/>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${response.json()['data']['listOfModels'][0]['name']}</arg>
+<arg>${model-nonrtric}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="PASS" starttime="20231005 17:42:58.254" endtime="20231005 17:42:58.255"/>
+</kw>
+<status status="PASS" starttime="20231005 17:42:58.221" endtime="20231005 17:42:58.255"/>
+</kw>
+<kw name="Get Deployable Models From DB" library="Action">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>${model-url}</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20231005 17:42:58.255" level="INFO">Creating Session using : alias=mysession, url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20231005 17:42:58.255" endtime="20231005 17:42:58.256"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/deployablemodels</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20231005 17:42:58.273" level="INFO">GET Request : url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models/deployablemodels 
+ path_url=/compiler/v1/db/models/deployablemodels 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20231005 17:42:58.273" level="INFO">GET Response : url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models/deployablemodels 
+ status=200, reason=OK 
+ headers={'Content-Length': '136', 'Content-Type': 'application/json', 'Date': 'Thu, 05 Oct 2023 17:42:58 GMT', 'Server': 'APISIX/3.5.0'} 
+ body={"result":"Success","message":"List of model with metadata.","data":{"models":["nonrtric.csar","dcaf-cmts-util.csar","dcaf-cmts.csar"]}} 
+ </msg>
+<msg timestamp="20231005 17:42:58.273" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'amsterdam-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20231005 17:42:58.273" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.256" endtime="20231005 17:42:58.273"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231005 17:42:58.274" level="INFO">{'result': 'Success', 'message': 'List of model with metadata.', 'data': {'models': ['nonrtric.csar', 'dcaf-cmts-util.csar', 'dcaf-cmts.csar']}}</msg>
+<status status="PASS" starttime="20231005 17:42:58.273" endtime="20231005 17:42:58.274"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20231005 17:42:58.275" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.274" endtime="20231005 17:42:58.275"/>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${response.json()['data']['models']}</arg>
+<arg>${model-nonrtric}.csar</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="PASS" starttime="20231005 17:42:58.275" endtime="20231005 17:42:58.276"/>
+</kw>
+<status status="PASS" starttime="20231005 17:42:58.255" endtime="20231005 17:42:58.276"/>
+</kw>
+<kw name="Get All Models From DB With MetaData" library="Action">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>${model-url}</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20231005 17:42:58.277" level="INFO">Creating Session using : alias=mysession, url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20231005 17:42:58.276" endtime="20231005 17:42:58.277"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/metadata</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20231005 17:42:58.294" level="INFO">GET Request : url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models/metadata 
+ path_url=/compiler/v1/db/models/metadata 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20231005 17:42:58.294" level="INFO">GET Response : url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models/metadata 
+ status=200, reason=OK 
+ headers={'Content-Length': '1502', 'Content-Type': 'application/json', 'Date': 'Thu, 05 Oct 2023 17:42:58 GMT', 'Server': 'APISIX/3.5.0'} 
+ body={"result":"Success","message":"List of model with metadata.","data":{"models":[{"description":"O-RAN Non-RT RIC","metadata":{"argowfsteps":"multi-wfc","cluster-name":"default","deployable":"true","gwec-image":"kuber-helm"},"service_url":"zip:file:/opt/app/csars/nonrtric.csar!/nonrtric.yaml"},{"description":"Service template for k8s cluster resources","metadata":{"argowfsteps":"multi-wfc","gwec-image":"kuber-helm","model-name":"cluster"},"service_url":"zip:file:/opt/app/csars/cluster.csar!/cluster/main.yaml"},{"metadata":{"model-name":"cluster-input-resource"},"service_url":"zip:file:/opt/app/csars/cluster-resource.csar!/cluster_input_service.yaml"},{"metadata":{"model-name":"dcaf-input-resource"},"service_url":"zip:file:/opt/app/csars/dcaf-resource.csar!/dcaf_input_service.yaml"},{"description":"Dynamic Network Control loop service with TICK for Fixed Wireless Customers","metadata":{"argowfsteps":"multi-wfc","deployable":"true","gwec-image":"gwec-helm-with-aws-credentials","model-name":"dcaf-cmts","topic-name":"cci.dcaf2.POLICY_EVENT_REPORTER_OUTPUT"},"service_url":"zip:file:/opt/app/csars/dcaf-cmts-util.csar!/dcaf_service.yaml"},{"description":"Dynamic Network Control loop service with TICK for Fixed Wireless Customers","metadata":{"argowfsteps":"multi-wfc","deployable":"true","gwec-image":"gwec-helm-with-aws-credentials","model-name":"dcaf-cmts","topic-name":"cci.dcaf2.POLICY_EVENT_REPORTER_OUTPUT"},"service_url":"zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml"}]}} 
+ </msg>
+<msg timestamp="20231005 17:42:58.294" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'amsterdam-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20231005 17:42:58.294" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.277" endtime="20231005 17:42:58.294"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231005 17:42:58.295" level="INFO">{'result': 'Success', 'message': 'List of model with metadata.', 'data': {'models': [{'description': 'O-RAN Non-RT RIC', 'metadata': {'argowfsteps': 'multi-wfc', 'cluster-name': 'default', 'deployable': 'true', 'gwec-image': 'kuber-helm'}, 'service_url': 'zip:file:/opt/app/csars/nonrtric.csar!/nonrtric.yaml'}, {'description': 'Service template for k8s cluster resources', 'metadata': {'argowfsteps': 'multi-wfc', 'gwec-image': 'kuber-helm', 'model-name': 'cluster'}, 'service_url': 'zip:file:/opt/app/csars/cluster.csar!/cluster/main.yaml'}, {'metadata': {'model-name': 'cluster-input-resource'}, 'service_url': 'zip:file:/opt/app/csars/cluster-resource.csar!/cluster_input_service.yaml'}, {'metadata': {'model-name': 'dcaf-input-resource'}, 'service_url': 'zip:file:/opt/app/csars/dcaf-resource.csar!/dcaf_input_service.yaml'}, {'description': 'Dynamic Network Control loop service with TICK for Fixed Wireless Customers', 'metadata': {'argowfsteps': 'multi-wfc', 'deployable': 'true', 'gwec-image': 'gwec-helm-with-aws-credentials', 'model-name': 'dcaf-cmts', 'topic-name': 'cci.dcaf2.POLICY_EVENT_REPORTER_OUTPUT'}, 'service_url': 'zip:file:/opt/app/csars/dcaf-cmts-util.csar!/dcaf_service.yaml'}, {'description': 'Dynamic Network Control loop service with TICK for Fixed Wireless Customers', 'metadata': {'argowfsteps': 'multi-wfc', 'deployable': 'true', 'gwec-image': 'gwec-helm-with-aws-credentials', 'model-name': 'dcaf-cmts', 'topic-name': 'cci.dcaf2.POLICY_EVENT_REPORTER_OUTPUT'}, 'service_url': 'zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml'}]}}</msg>
+<status status="PASS" starttime="20231005 17:42:58.294" endtime="20231005 17:42:58.295"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20231005 17:42:58.296" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.295" endtime="20231005 17:42:58.296"/>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${response.json()['data']['models'][0]['service_url']}</arg>
+<arg>${model-nonrtric}.csar</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="PASS" starttime="20231005 17:42:58.296" endtime="20231005 17:42:58.297"/>
+</kw>
+<status status="PASS" starttime="20231005 17:42:58.276" endtime="20231005 17:42:58.297"/>
+</kw>
+<kw name="Get Specific TOSCA Model Data" library="Action">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>${model-url}</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20231005 17:42:58.298" level="INFO">Creating Session using : alias=mysession, url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20231005 17:42:58.297" endtime="20231005 17:42:58.298"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/${model-nonrtric}</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20231005 17:42:58.315" level="INFO">GET Request : url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models/nonrtric 
+ path_url=/compiler/v1/db/models/nonrtric 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20231005 17:42:58.315" level="INFO">GET Response : url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models/nonrtric 
+ status=200, reason=OK 
+ headers={'Content-Length': '309', 'Content-Type': 'application/json', 'Date': 'Thu, 05 Oct 2023 17:42:58 GMT', 'Server': 'APISIX/3.5.0'} 
+ body={"result":"Success","message":"List of models by its name.","data":{"model":[{"description":"O-RAN Non-RT RIC","metadata":{"argowfsteps":"multi-wfc","cluster-name":"default","deployable":"true","gwec-image":"kuber-helm"},"name":"nonrtric","namespace":"zip:file:/opt/app/csars/nonrtric.csar!/nonrtric.yaml"}]}} 
+ </msg>
+<msg timestamp="20231005 17:42:58.315" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'amsterdam-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20231005 17:42:58.316" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.298" endtime="20231005 17:42:58.316"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231005 17:42:58.317" level="INFO">{'result': 'Success', 'message': 'List of models by its name.', 'data': {'model': [{'description': 'O-RAN Non-RT RIC', 'metadata': {'argowfsteps': 'multi-wfc', 'cluster-name': 'default', 'deployable': 'true', 'gwec-image': 'kuber-helm'}, 'name': 'nonrtric', 'namespace': 'zip:file:/opt/app/csars/nonrtric.csar!/nonrtric.yaml'}]}}</msg>
+<status status="PASS" starttime="20231005 17:42:58.316" endtime="20231005 17:42:58.317"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20231005 17:42:58.318" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.317" endtime="20231005 17:42:58.318"/>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${response.json()['data']['model'][0]['name']}</arg>
+<arg>${model-nonrtric}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="PASS" starttime="20231005 17:42:58.318" endtime="20231005 17:42:58.319"/>
+</kw>
+<status status="PASS" starttime="20231005 17:42:58.297" endtime="20231005 17:42:58.319"/>
+</kw>
+<kw name="Get NodeTemplates Based On Substitute" library="Action">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>${model-url}</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20231005 17:42:58.320" level="INFO">Creating Session using : alias=mysession, url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20231005 17:42:58.319" endtime="20231005 17:42:58.320"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/substitute/gin.nodes.MetricsServer</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20231005 17:42:58.349" level="INFO">GET Request : url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models/substitute/gin.nodes.MetricsServer 
+ path_url=/compiler/v1/db/models/substitute/gin.nodes.MetricsServer 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20231005 17:42:58.350" level="INFO">GET Response : url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models/substitute/gin.nodes.MetricsServer 
+ status=200, reason=OK 
+ headers={'Content-Length': '271', 'Content-Type': 'application/json', 'Date': 'Thu, 05 Oct 2023 17:42:58 GMT', 'Server': 'APISIX/3.5.0'} 
+ body={"result":"Success","message":"List of node templates based on substitute directive.","data":[[{"servicetemplate":{"nodetemplates":[{"name":"subs__tick__influxdb.yaml.influxdb"}]}}],[{"servicetemplate":{"nodetemplates":[{"name":"subs__tick__influxdb.yaml.influxdb"}]}}]]} 
+ </msg>
+<msg timestamp="20231005 17:42:58.350" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'amsterdam-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20231005 17:42:58.350" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.320" endtime="20231005 17:42:58.350"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231005 17:42:58.351" level="INFO">{'result': 'Success', 'message': 'List of node templates based on substitute directive.', 'data': [[{'servicetemplate': {'nodetemplates': [{'name': 'subs__tick__influxdb.yaml.influxdb'}]}}], [{'servicetemplate': {'nodetemplates': [{'name': 'subs__tick__influxdb.yaml.influxdb'}]}}]]}</msg>
+<status status="PASS" starttime="20231005 17:42:58.350" endtime="20231005 17:42:58.351"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20231005 17:42:58.352" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.351" endtime="20231005 17:42:58.352"/>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${response.json()['data'][0][0]['servicetemplate']['nodetemplates'][0]['name']}</arg>
+<arg>${nodetemplate}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="PASS" starttime="20231005 17:42:58.352" endtime="20231005 17:42:58.353"/>
+</kw>
+<status status="PASS" starttime="20231005 17:42:58.319" endtime="20231005 17:42:58.353"/>
+</kw>
+<kw name="Get NodeTemplates Based on Select" library="Action">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>${model-url}</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20231005 17:42:58.354" level="INFO">Creating Session using : alias=mysession, url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20231005 17:42:58.353" endtime="20231005 17:42:58.354"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/select/k8s:Cluster</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20231005 17:42:58.378" level="INFO">GET Request : url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models/select/k8s:Cluster 
+ path_url=/compiler/v1/db/models/select/k8s:Cluster 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20231005 17:42:58.378" level="INFO">GET Response : url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models/select/k8s:Cluster 
+ status=200, reason=OK 
+ headers={'Content-Length': '577', 'Content-Type': 'application/json', 'Date': 'Thu, 05 Oct 2023 17:42:58 GMT', 'Server': 'APISIX/3.5.0'} 
+ body={"result":"Success","message":"List of node templates based on select directive.","data":[[{"name":"main","service_url":"zip:file:/opt/app/csars/cluster.csar!/cluster/main.yaml","servicetemplate":{"nodetemplates":[{"name":"cluster_resource_inputs"},{"name":"cluster__subs__aws_cluster_function_service.yaml.vpc"},{"name":"cluster__subs__aws_cluster_function_service.yaml.cluster_site_host"},{"name":"cluster_host"},{"name":"cluster"},{"name":"cluster__subs__aws_cluster_function_service.yaml.subnet"},{"name":"kubectl"},{"name":"common__resources__aws_resource.yaml.aws"}]}}]]} 
+ </msg>
+<msg timestamp="20231005 17:42:58.378" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'amsterdam-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20231005 17:42:58.378" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.354" endtime="20231005 17:42:58.379"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231005 17:42:58.379" level="INFO">{'result': 'Success', 'message': 'List of node templates based on select directive.', 'data': [[{'name': 'main', 'service_url': 'zip:file:/opt/app/csars/cluster.csar!/cluster/main.yaml', 'servicetemplate': {'nodetemplates': [{'name': 'cluster_resource_inputs'}, {'name': 'cluster__subs__aws_cluster_function_service.yaml.vpc'}, {'name': 'cluster__subs__aws_cluster_function_service.yaml.cluster_site_host'}, {'name': 'cluster_host'}, {'name': 'cluster'}, {'name': 'cluster__subs__aws_cluster_function_service.yaml.subnet'}, {'name': 'kubectl'}, {'name': 'common__resources__aws_resource.yaml.aws'}]}}]]}</msg>
+<status status="PASS" starttime="20231005 17:42:58.379" endtime="20231005 17:42:58.380"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20231005 17:42:58.380" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.380" endtime="20231005 17:42:58.381"/>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${response.json()['data'][0][0]['name']}</arg>
+<arg>${model-main}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="PASS" starttime="20231005 17:42:58.381" endtime="20231005 17:42:58.381"/>
+</kw>
+<status status="PASS" starttime="20231005 17:42:58.353" endtime="20231005 17:42:58.381"/>
+</kw>
+<kw name="Get NodeTemplates From Model" library="Action">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>${model-url}</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20231005 17:42:58.382" level="INFO">Creating Session using : alias=mysession, url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20231005 17:42:58.382" endtime="20231005 17:42:58.383"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/${model-nonrtric}/nodetemplates</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20231005 17:42:58.401" level="INFO">GET Request : url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models/nonrtric/nodetemplates 
+ path_url=/compiler/v1/db/models/nonrtric/nodetemplates 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20231005 17:42:58.401" level="INFO">GET Response : url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models/nonrtric/nodetemplates 
+ status=200, reason=OK 
+ headers={'Content-Length': '264', 'Content-Type': 'application/json', 'Date': 'Thu, 05 Oct 2023 17:42:58 GMT', 'Server': 'APISIX/3.5.0'} 
+ body={"result":"Success","message":"List of node templates.","data":{"model":[{"name":"nonrtric","service_url":"zip:file:/opt/app/csars/nonrtric.csar!/nonrtric.yaml","servicetemplate":{"nodetemplates":[{"name":"nonrtric"},{"name":"namespace"},{"name":"configmap"}]}}]}} 
+ </msg>
+<msg timestamp="20231005 17:42:58.401" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'amsterdam-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20231005 17:42:58.401" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.383" endtime="20231005 17:42:58.401"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231005 17:42:58.402" level="INFO">{'result': 'Success', 'message': 'List of node templates.', 'data': {'model': [{'name': 'nonrtric', 'service_url': 'zip:file:/opt/app/csars/nonrtric.csar!/nonrtric.yaml', 'servicetemplate': {'nodetemplates': [{'name': 'nonrtric'}, {'name': 'namespace'}, {'name': 'configmap'}]}}]}}</msg>
+<status status="PASS" starttime="20231005 17:42:58.402" endtime="20231005 17:42:58.402"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20231005 17:42:58.403" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.402" endtime="20231005 17:42:58.403"/>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${response.json()['data']['model'][0]['name']}</arg>
+<arg>${model-nonrtric}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="PASS" starttime="20231005 17:42:58.403" endtime="20231005 17:42:58.404"/>
+</kw>
+<status status="PASS" starttime="20231005 17:42:58.382" endtime="20231005 17:42:58.404"/>
+</kw>
+<kw name="Get Substitution Nodes From Model" library="Action">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>${model-url}</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20231005 17:42:58.405" level="INFO">Creating Session using : alias=mysession, url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20231005 17:42:58.405" endtime="20231005 17:42:58.405"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/${model-main}/abstract</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20231005 17:42:58.424" level="INFO">GET Request : url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models/main/abstract 
+ path_url=/compiler/v1/db/models/main/abstract 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20231005 17:42:58.424" level="INFO">GET Response : url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models/main/abstract 
+ status=200, reason=OK 
+ headers={'Content-Length': '497', 'Content-Type': 'application/json', 'Date': 'Thu, 05 Oct 2023 17:42:58 GMT', 'Server': 'APISIX/3.5.0'} 
+ body={"result":"Success","message":"List of substitution mapping nodes.","data":{"substitution-nodes":[{"name":"main","service_url":"zip:file:/opt/app/csars/cluster.csar!/cluster/main.yaml","servicetemplate":{"nodetemplates":[{"directives":["substitute"],"name":"cluster_resource_inputs","nodetype":{"parentname":"tosca.nodes.Root"},"nodetypename":"cluster_resource"},{"directives":["substitute"],"name":"cluster_host","nodetype":{"parentname":"tosca.nodes.Root"},"nodetypename":"cci.nodes.site"}]}}]}} 
+ </msg>
+<msg timestamp="20231005 17:42:58.424" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'amsterdam-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20231005 17:42:58.424" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.405" endtime="20231005 17:42:58.424"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231005 17:42:58.425" level="INFO">{'result': 'Success', 'message': 'List of substitution mapping nodes.', 'data': {'substitution-nodes': [{'name': 'main', 'service_url': 'zip:file:/opt/app/csars/cluster.csar!/cluster/main.yaml', 'servicetemplate': {'nodetemplates': [{'directives': ['substitute'], 'name': 'cluster_resource_inputs', 'nodetype': {'parentname': 'tosca.nodes.Root'}, 'nodetypename': 'cluster_resource'}, {'directives': ['substitute'], 'name': 'cluster_host', 'nodetype': {'parentname': 'tosca.nodes.Root'}, 'nodetypename': 'cci.nodes.site'}]}}]}}</msg>
+<status status="PASS" starttime="20231005 17:42:58.424" endtime="20231005 17:42:58.425"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20231005 17:42:58.426" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.425" endtime="20231005 17:42:58.426"/>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${response.json()['data']['substitution-nodes'][0]['name']}</arg>
+<arg>${model-main}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="PASS" starttime="20231005 17:42:58.426" endtime="20231005 17:42:58.427"/>
+</kw>
+<status status="PASS" starttime="20231005 17:42:58.404" endtime="20231005 17:42:58.427"/>
+</kw>
+<kw name="Find Dangling Requirements Of Given Model" library="Action">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>${model-url}</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20231005 17:42:58.428" level="INFO">Creating Session using : alias=mysession, url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20231005 17:42:58.427" endtime="20231005 17:42:58.428"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/${model-nonrtric}/dangling_requirements</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20231005 17:42:58.481" level="INFO">GET Request : url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models/nonrtric/dangling_requirements 
+ path_url=/compiler/v1/db/models/nonrtric/dangling_requirements 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20231005 17:42:58.481" level="INFO">GET Response : url=https://amsterdam-apisix-gateway.cci-dev.com/compiler/v1/db/models/nonrtric/dangling_requirements 
+ status=200, reason=OK 
+ headers={'Content-Length': '276', 'Content-Type': 'application/json', 'Date': 'Thu, 05 Oct 2023 17:42:58 GMT', 'Server': 'APISIX/3.5.0'} 
+ body={"result":"Success","message":"Dangling requirements from nonrtric model.","data":[{"name":"nonrtric","service_url":"zip:file:/opt/app/csars/nonrtric.csar!/nonrtric.yaml","servicetemplate":{"nodetemplates":[{"configmap":{"requirements":[]},"nonrtric":{"requirements":[]}}]}}]} 
+ </msg>
+<msg timestamp="20231005 17:42:58.481" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'amsterdam-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20231005 17:42:58.481" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.428" endtime="20231005 17:42:58.481"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231005 17:42:58.482" level="INFO">{'result': 'Success', 'message': 'Dangling requirements from nonrtric model.', 'data': [{'name': 'nonrtric', 'service_url': 'zip:file:/opt/app/csars/nonrtric.csar!/nonrtric.yaml', 'servicetemplate': {'nodetemplates': [{'configmap': {'requirements': []}, 'nonrtric': {'requirements': []}}]}}]}</msg>
+<status status="PASS" starttime="20231005 17:42:58.482" endtime="20231005 17:42:58.483"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20231005 17:42:58.483" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.483" endtime="20231005 17:42:58.483"/>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${response.json()['data'][0]['name']}</arg>
+<arg>${model-nonrtric}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="PASS" starttime="20231005 17:42:58.484" endtime="20231005 17:42:58.484"/>
+</kw>
+<status status="PASS" starttime="20231005 17:42:58.427" endtime="20231005 17:42:58.484"/>
+</kw>
+<kw name="Get All Instances From DB" library="Action">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>${instance-url}</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20231005 17:42:58.485" level="INFO">Creating Session using : alias=mysession, url=https://amsterdam-apisix-gateway.cci-dev.com/so/v1/instances, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20231005 17:42:58.485" endtime="20231005 17:42:58.485"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20231005 17:42:58.513" level="INFO">GET Request : url=https://amsterdam-apisix-gateway.cci-dev.com/so/v1/instances/ (redirected) 
+ path_url=/so/v1/instances/ 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20231005 17:42:58.513" level="INFO">GET Response : url=https://amsterdam-apisix-gateway.cci-dev.com/so/v1/instances 
+ status=200, reason=OK 
+ headers={'Content-Length': '865', 'Content-Type': 'application/json', 'Date': 'Thu, 05 Oct 2023 17:42:58 GMT', 'Server': 'APISIX/3.5.0'} 
+ body=[{"uid":"0x137","name":"pc085n","dependent_instance":[""],"version":"1.0","grammarversion":"tosca_simple_yaml_1_3","properties":{},"vertexes":[]},{"uid":"0x29bb","name":"cluster_input_service_2733441890","dependent_instance":["cluster_78944486"],"version":"1.0","grammarversion":"tosca_simple_yaml_1_3,tick_profile_1_0","properties":{},"vertexes":[]},{"uid":"0x29e0","name":"cluster_78944486","dependent_instance":["malitpe"],"version":"1.0","grammarversion":"tick_profile_1_0,tosca_simple_yaml_1_3","properties":{},"vertexes":[]},{"uid":"0x2ab2","name":"dcaf_input_service_451767916","dependent_instance":["malitpe"],"version":"1.0","grammarversion":"tick_profile_1_0,tosca_simple_yaml_1_3","properties":{},"vertexes":[]},{"uid":"0x2d1d","name":"malitpe","dependent_instance":[""],"version":"1.0","grammarversion":"tick_profile_1_0","properties":{},"vertexes":[]}] 
+ </msg>
+<msg timestamp="20231005 17:42:58.513" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'amsterdam-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(
+/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'amsterdam-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20231005 17:42:58.513" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.486" endtime="20231005 17:42:58.513"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231005 17:42:58.514" level="INFO">[{'uid': '0x137', 'name': 'pc085n', 'dependent_instance': [''], 'version': '1.0', 'grammarversion': 'tosca_simple_yaml_1_3', 'properties': {}, 'vertexes': []}, {'uid': '0x29bb', 'name': 'cluster_input_service_2733441890', 'dependent_instance': ['cluster_78944486'], 'version': '1.0', 'grammarversion': 'tosca_simple_yaml_1_3,tick_profile_1_0', 'properties': {}, 'vertexes': []}, {'uid': '0x29e0', 'name': 'cluster_78944486', 'dependent_instance': ['malitpe'], 'version': '1.0', 'grammarversion': 'tick_profile_1_0,tosca_simple_yaml_1_3', 'properties': {}, 'vertexes': []}, {'uid': '0x2ab2', 'name': 'dcaf_input_service_451767916', 'dependent_instance': ['malitpe'], 'version': '1.0', 'grammarversion': 'tick_profile_1_0,tosca_simple_yaml_1_3', 'properties': {}, 'vertexes': []}, {'uid': '0x2d1d', 'name': 'malitpe', 'dependent_instance': [''], 'version': '1.0', 'grammarversion': 'tick_profile_1_0', 'properties': {}, 'vertexes': []}]</msg>
+<status status="PASS" starttime="20231005 17:42:58.514" endtime="20231005 17:42:58.514"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20231005 17:42:58.515" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.515" endtime="20231005 17:42:58.515"/>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${response.json()[0]['name']}</arg>
+<arg>${instance-nonrtric}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="PASS" starttime="20231005 17:42:58.515" endtime="20231005 17:42:58.516"/>
+</kw>
+<status status="PASS" starttime="20231005 17:42:58.484" endtime="20231005 17:42:58.516"/>
+</kw>
+<kw name="Get Specific Instance From DB" library="Action">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>${instance-url}</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20231005 17:42:58.517" level="INFO">Creating Session using : alias=mysession, url=https://amsterdam-apisix-gateway.cci-dev.com/so/v1/instances, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20231005 17:42:58.517" endtime="20231005 17:42:58.517"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/${instance-nonrtric}</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20231005 17:42:58.538" level="INFO">GET Request : url=https://amsterdam-apisix-gateway.cci-dev.com/so/v1/instances/pc085n 
+ path_url=/so/v1/instances/pc085n 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20231005 17:42:58.538" level="INFO">GET Response : url=https://amsterdam-apisix-gateway.cci-dev.com/so/v1/instances/pc085n 
+ status=200, reason=OK 
+ headers={'Content-Length': '820', 'Content-Type': 'application/json', 'Date': 'Thu, 05 Oct 2023 17:42:58 GMT', 'Server': 'APISIX/3.5.0'} 
+ body={"uid":"0x137","name":"pc085n","dependent_instance":[""],"version":"1.0","grammarversion":"tosca_simple_yaml_1_3","properties":{},"vertexes":[{"attributes":{},"entity":"workflowActivity","id":null},{"attributes":{},"entity":"workflowStep","id":null,"name":"namespace.create"},{"attributes":{},"entity":"workflowActivity","id":null},{"attributes":{},"entity":"workflowStep","id":null,"name":"configmap.create"},{"attributes":{},"entity":"workflowActivity","id":null},{"attributes":{},"entity":"NodeTemplate","id":null,"name":"nonrtric"},{"attributes":{},"entity":"NodeTemplate","id":null,"name":"namespace"},{"attributes":{},"entity":"workflow","id":null,"name":"deploy"},{"attributes":{},"entity":"workflowStep","id":null,"name":"nonrtric.create"},{"attributes":{},"entity":"NodeTemplate","id":null,"name":"configmap"}]} 
+ </msg>
+<msg timestamp="20231005 17:42:58.538" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'amsterdam-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20231005 17:42:58.539" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.517" endtime="20231005 17:42:58.539"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231005 17:42:58.540" level="INFO">{'uid': '0x137', 'name': 'pc085n', 'dependent_instance': [''], 'version': '1.0', 'grammarversion': 'tosca_simple_yaml_1_3', 'properties': {}, 'vertexes': [{'attributes': {}, 'entity': 'workflowActivity', 'id': None}, {'attributes': {}, 'entity': 'workflowStep', 'id': None, 'name': 'namespace.create'}, {'attributes': {}, 'entity': 'workflowActivity', 'id': None}, {'attributes': {}, 'entity': 'workflowStep', 'id': None, 'name': 'configmap.create'}, {'attributes': {}, 'entity': 'workflowActivity', 'id': None}, {'attributes': {}, 'entity': 'NodeTemplate', 'id': None, 'name': 'nonrtric'}, {'attributes': {}, 'entity': 'NodeTemplate', 'id': None, 'name': 'namespace'}, {'attributes': {}, 'entity': 'workflow', 'id': None, 'name': 'deploy'}, {'attributes': {}, 'entity': 'workflowStep', 'id': None, 'name': 'nonrtric.create'}, {'attributes': {}, 'entity': 'NodeTemplate', 'id': None, 'name': 'configmap'}]}</msg>
+<status status="PASS" starttime="20231005 17:42:58.539" endtime="20231005 17:42:58.540"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20231005 17:42:58.541" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.540" endtime="20231005 17:42:58.541"/>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${response.json()['name']}</arg>
+<arg>${instance-nonrtric}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="PASS" starttime="20231005 17:42:58.541" endtime="20231005 17:42:58.542"/>
+</kw>
+<status status="PASS" starttime="20231005 17:42:58.516" endtime="20231005 17:42:58.542"/>
+</kw>
+<kw name="Get All Instances With Deployed Instances From DB" library="Action">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>${instance-url}</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20231005 17:42:58.542" level="INFO">Creating Session using : alias=mysession, url=https://amsterdam-apisix-gateway.cci-dev.com/so/v1/instances, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20231005 17:42:58.542" endtime="20231005 17:42:58.543"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/deployedInstances</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20231005 17:42:58.560" level="INFO">GET Request : url=https://amsterdam-apisix-gateway.cci-dev.com/so/v1/instances/deployedInstances 
+ path_url=/so/v1/instances/deployedInstances 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20231005 17:42:58.560" level="INFO">GET Response : url=https://amsterdam-apisix-gateway.cci-dev.com/so/v1/instances/deployedInstances 
+ status=200, reason=OK 
+ headers={'Content-Length': '84', 'Content-Type': 'application/json', 'Date': 'Thu, 05 Oct 2023 17:42:58 GMT', 'Server': 'APISIX/3.5.0'} 
+ body={"result":"Success","message":"List Of Deployed Models","data":["pc085n","malitpe"]} 
+ </msg>
+<msg timestamp="20231005 17:42:58.560" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'amsterdam-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20231005 17:42:58.560" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.543" endtime="20231005 17:42:58.560"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231005 17:42:58.561" level="INFO">{'result': 'Success', 'message': 'List Of Deployed Models', 'data': ['pc085n', 'malitpe']}</msg>
+<status status="PASS" starttime="20231005 17:42:58.560" endtime="20231005 17:42:58.561"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20231005 17:42:58.562" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.561" endtime="20231005 17:42:58.562"/>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${response.json()['data']}</arg>
+<arg>${instance-nonrtric}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="PASS" starttime="20231005 17:42:58.562" endtime="20231005 17:42:58.563"/>
+</kw>
+<status status="PASS" starttime="20231005 17:42:58.542" endtime="20231005 17:42:58.563"/>
+</kw>
+<kw name="Get Status of Specific Instance" library="Action">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>${instance-url}</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20231005 17:42:58.564" level="INFO">Creating Session using : alias=mysession, url=https://amsterdam-apisix-gateway.cci-dev.com/so/v1/instances, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20231005 17:42:58.563" endtime="20231005 17:42:58.564"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/${instance-nonrtric}/status</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20231005 17:42:58.653" level="INFO">GET Request : url=https://amsterdam-apisix-gateway.cci-dev.com/so/v1/instances/pc085n/status 
+ path_url=/so/v1/instances/pc085n/status 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20231005 17:42:58.653" level="INFO">GET Response : url=https://amsterdam-apisix-gateway.cci-dev.com/so/v1/instances/pc085n/status 
+ status=202, reason=Accepted 
+ headers={'Content-Length': '95', 'Content-Type': 'application/json', 'Date': 'Thu, 05 Oct 2023 17:42:58 GMT', 'Server': 'APISIX/3.5.0'} 
+ body={"result":"Success","message":"Instance Status :Success","modelname":"nonrtric.csar","data":{}} 
+ </msg>
+<msg timestamp="20231005 17:42:58.653" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'amsterdam-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20231005 17:42:58.654" level="INFO">${response} = &lt;Response [202]&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.564" endtime="20231005 17:42:58.654"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231005 17:42:58.655" level="INFO">{'result': 'Success', 'message': 'Instance Status :Success', 'modelname': 'nonrtric.csar', 'data': {}}</msg>
+<status status="PASS" starttime="20231005 17:42:58.654" endtime="20231005 17:42:58.655"/>
+</kw>
+<kw name="Should Be True" library="BuiltIn">
+<arg>'${response.status_code}'=='200' or '${response.status_code}'=='202'</arg>
+<doc>Fails if the given condition is not true.</doc>
+<status status="PASS" starttime="20231005 17:42:58.655" endtime="20231005 17:42:58.657"/>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${response.json()['modelname']}</arg>
+<arg>${model-nonrtric}.csar</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="PASS" starttime="20231005 17:42:58.657" endtime="20231005 17:42:58.658"/>
+</kw>
+<status status="PASS" starttime="20231005 17:42:58.563" endtime="20231005 17:42:58.658"/>
+</kw>
+<kw name="Get All Policies Of Specific Instance" library="Action">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>${instance-url}</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20231005 17:42:58.659" level="INFO">Creating Session using : alias=mysession, url=https://amsterdam-apisix-gateway.cci-dev.com/so/v1/instances, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20231005 17:42:58.658" endtime="20231005 17:42:58.659"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/${instance-dcaf-cmts}/policies</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20231005 17:43:08.699" level="INFO">GET Request : url=https://amsterdam-apisix-gateway.cci-dev.com/so/v1/instances/malitpe/policies 
+ path_url=/so/v1/instances/malitpe/policies 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20231005 17:43:08.699" level="INFO">GET Response : url=https://amsterdam-apisix-gateway.cci-dev.com/so/v1/instances/malitpe/policies 
+ status=200, reason=OK 
+ headers={'Content-Type': 'application/json', 'Date': 'Thu, 05 Oct 2023 17:43:08 GMT', 'Server': 'APISIX/3.5.0', 'Transfer-Encoding': 'chunked'} 
+ body={"policies":{"packet_volume_limiter":{"name":"packet_volume_limiter","description":"policy packet_volume_limiter","steps":{"packet_volume_limiter.start":{"name":"packet_volume_limiter.start","event":"","condition":null,"target":["cmts_adapter"],"action":[{"call_operation":{"operation":"start"},"update":null}],"triggers":["packet_volume_limiter.trigger.traffic_high_downstream","packet_volume_limiter.trigger.traffic_low_upstream","packet_volume_limiter.trigger.traffic_high_upstream","packet_volume_limiter.trigger.traffic_low_downstream"],"failure":null,"expression":""},"packet_volume_limiter.stop":{"name":"packet_volume_limiter.stop","event":"","condition":null,"target":["cmts_adapter"],"action":[{"call_operation":{"operation":"stop"},"update":null}],"triggers":null,"failure":null,"expression":""},"packet_volume_limiter.trigger.traffic_high_downstream":{"name":"packet_volume_limiter.trigger.traffic_high_downstream","event":"cci.interfaces.TrafficMonitor.traffic_volume_notification","condition":[{"dir":{"tosca.constraint.equal":"downstream"}},{"rule_name":{"tosca.constraint.equal":"traffic_high"}}],"target":["cmts_adapter"],"action":[{"call_operation":{"inputs":{"rate":{"$functionCall":{"arguments":[{"$value":"downstream_rate_lower"}],"column":-1,"name":"tosca.function.get_input","path":"servicetemplate.policies{0}.triggerdefinitions[\"traffic_high_downstream\"].action[0].calloperation.inputs[\"rate\"]","row":-1,"url":"zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml"},"required":true},"sfid":{"$value":123}},"interface":"Standard","operation":"modify"},"update":null}],"triggers":null,"failure":null,"expression":"dir == downstream \u0026\u0026 rule_name == traffic_high"},"packet_volume_limiter.trigger.traffic_high_upstream":{"name":"packet_volume_limiter.trigger.traffic_high_upstream","event":"cci.interfaces.TrafficMonitor.traffic_volume_notification","condition":[{"dir":{"tosca.constraint.equal":"upstream"}},{"rule_name":{"tosca.constraint.equal":"traffic_high"}}],"target":["cmts_adapter"],"action":[{"call_operation":{"inputs":{"rate":{"$functionCall":{"arguments":[{"$value":"upstream_rate_lower"}],"column":-1,"name":"tosca.function.get_input","path":"servicetemplate.policies{0}.triggerdefinitions[\"traffic_high_upstream\"].action[0].calloperation.inputs[\"rate\"]","row":-1,"url":"zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml"},"required":true},"sfid":{"$value":123}},"interface":"Standard","operation":"modify"},"update":null}],"triggers":null,"failure":null,"expression":"dir == upstream \u0026\u0026 rule_name == traffic_high"},"packet_volume_limiter.trigger.traffic_low_downstream":{"name":"packet_volume_limiter.trigger.traffic_low_downstream","event":"cci.interfaces.TrafficMonitor.traffic_volume_notification","condition":[{"dir":{"tosca.constraint.equal":"downstream"}},{"rule_name":{"tosca.constraint.equal":"traffic_low"}}],"target":["cmts_adapter"],"action":[{"call_operation":{"inputs":{"rate":{"$functionCall":{"arguments":[{"$value":"downstream_rate_upper"}],"column":-1,"name":"tosca.function.get_input","path":"servicetemplate.policies{0}.triggerdefinitions[\"traffic_low_downstream\"].action[0].calloperation.inputs[\"rate\"]","row":-1,"url":"zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml"},"required":true},"sfid":{"$value":123}},"interface":"Standard","operation":"modify"},"update":null}],"triggers":null,"failure":null,"expression":"dir == downstream \u0026\u0026 rule_name == traffic_low"},"packet_volume_limiter.trigger.traffic_low_upstream":{"name":"packet_volume_limiter.trigger.traffic_low_upstream","event":"cci.interfaces.TrafficMonitor.traffic_volume_notification","condition":[{"dir":{"tosca.constraint.equal":"upstream"}},{"rule_name":{"tosca.constraint.equal":"traffic_low"}}],"target":["cmts_adapter"],"action":[{"call_operation":{"inputs":{"rate":{"$functionCall":{"arguments":[{"$value":"upstream_rate_upper"}],"column":-1,"name":"tosca.function.get_input","path":"servicetemplate.policies{0}.triggerdefinitions[\"traffic_low_upstream\"].action[0].calloperation.inputs[\"rate\"]","row":-1,"url":"zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml"},"required":true},"sfid":{"$value":123}},"interface":"Standard","operation":"modify"},"update":null}],"triggers":null,"failure":null,"expression":"dir == upstream \u0026\u0026 rule_name == traffic_low"}},"triggers":[{"name":"packet_volume_limiter.trigger.traffic_high_downstream","event":"cci.interfaces.TrafficMonitor.traffic_volume_notification","condition":[{"dir":{"tosca.constraint.equal":"downstream"}},{"rule_name":{"tosca.constraint.equal":"traffic_high"}}],"target":["cmts_adapter"],"action":[{"call_operation":{"inputs":{"rate":{"$functionCall":{"arguments":[{"$value":"downstream_rate_lower"}],"column":-1,"name":"tosca.function.get_input","path":"servicetemplate.policies{0}.triggerdefinitions[\"traffic_high_downstream\"].action[0].calloperation.inputs[\"rate\"]","row":-1,"url":"zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml"},"required":true},"sfid":{"$value":123}},"interface":"Standard","operation":"modify"},"update":null}],"triggers":null,"failure":null,"expression":"dir == downstream \u0026\u0026 rule_name == traffic_high"},{"name":"packet_volume_limiter.trigger.traffic_low_upstream","event":"cci.interfaces.TrafficMonitor.traffic_volume_notification","condition":[{"dir":{"tosca.constraint.equal":"upstream"}},{"rule_name":{"tosca.constraint.equal":"traffic_low"}}],"target":["cmts_adapter"],"action":[{"call_operation":{"inputs":{"rate":{"$functionCall":{"arguments":[{"$value":"upstream_rate_upper"}],"column":-1,"name":"tosca.function.get_input","path":"servicetemplate.policies{0}.triggerdefinitions[\"traffic_low_upstream\"].action[0].calloperation.inputs[\"rate\"]","row":-1,"url":"zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml"},"required":true},"sfid":{"$value":123}},"interface":"Standard","operation":"modify"},"update":null}],"triggers":null,"failure":null,"expression":"dir == upstream \u0026\u0026 rule_name == traffic_low"},{"name":"packet_volume_limiter.trigger.traffic_high_upstream","event":"cci.interfaces.TrafficMonitor.traffic_volume_notification","condition":[{"dir":{"tosca.constraint.equal":"upstream"}},{"rule_name":{"tosca.constraint.equal":"traffic_high"}}],"target":["cmts_adapter"],"action":[{"call_operation":{"inputs":{"rate":{"$functionCall":{"arguments":[{"$value":"upstream_rate_lower"}],"column":-1,"name":"tosca.function.get_input","path":"servicetemplate.policies{0}.triggerdefinitions[\"traffic_high_upstream\"].action[0].calloperation.inputs[\"rate\"]","row":-1,"url":"zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml"},"required":true},"sfid":{"$value":123}},"interface":"Standard","operation":"modify"},"update":null}],"triggers":null,"failure":null,"expression":"dir == upstream \u0026\u0026 rule_name == traffic_high"},{"name":"packet_volume_limiter.trigger.traffic_low_downstream","event":"cci.interfaces.TrafficMonitor.traffic_volume_notification","condition":[{"dir":{"tosca.constraint.equal":"downstream"}},{"rule_name":{"tosca.constraint.equal":"traffic_low"}}],"target":["cmts_adapter"],"action":[{"call_operation":{"inputs":{"rate":{"$functionCall":{"arguments":[{"$value":"downstream_rate_upper"}],"column":-1,"name":"tosca.function.get_input","path":"servicetemplate.policies{0}.triggerdefinitions[\"traffic_low_downstream\"].action[0].calloperation.inputs[\"rate\"]","row":-1,"url":"zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml"},"required":true},"sfid":{"$value":123}},"interface":"Standard","operation":"modify"},"update":null}],"triggers":null,"failure":null,"expression":"dir == downstream \u0026\u0026 rule_name == traffic_low"}]}}} 
+ </msg>
+<msg timestamp="20231005 17:43:08.699" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'amsterdam-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20231005 17:43:08.700" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20231005 17:42:58.659" endtime="20231005 17:43:08.700"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231005 17:43:08.701" level="INFO">{'policies': {'packet_volume_limiter': {'name': 'packet_volume_limiter', 'description': 'policy packet_volume_limiter', 'steps': {'packet_volume_limiter.start': {'name': 'packet_volume_limiter.start', 'event': '', 'condition': None, 'target': ['cmts_adapter'], 'action': [{'call_operation': {'operation': 'start'}, 'update': None}], 'triggers': ['packet_volume_limiter.trigger.traffic_high_downstream', 'packet_volume_limiter.trigger.traffic_low_upstream', 'packet_volume_limiter.trigger.traffic_high_upstream', 'packet_volume_limiter.trigger.traffic_low_downstream'], 'failure': None, 'expression': ''}, 'packet_volume_limiter.stop': {'name': 'packet_volume_limiter.stop', 'event': '', 'condition': None, 'target': ['cmts_adapter'], 'action': [{'call_operation': {'operation': 'stop'}, 'update': None}], 'triggers': None, 'failure': None, 'expression': ''}, 'packet_volume_limiter.trigger.traffic_high_downstream': {'name': 'packet_volume_limiter.trigger.traffic_high_downstream', 'event': 'cci.interfaces.TrafficMonitor.traffic_volume_notification', 'condition': [{'dir': {'tosca.constraint.equal': 'downstream'}}, {'rule_name': {'tosca.constraint.equal': 'traffic_high'}}], 'target': ['cmts_adapter'], 'action': [{'call_operation': {'inputs': {'rate': {'$functionCall': {'arguments': [{'$value': 'downstream_rate_lower'}], 'column': -1, 'name': 'tosca.function.get_input', 'path': 'servicetemplate.policies{0}.triggerdefinitions["traffic_high_downstream"].action[0].calloperation.inputs["rate"]', 'row': -1, 'url': 'zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml'}, 'required': True}, 'sfid': {'$value': 123}}, 'interface': 'Standard', 'operation': 'modify'}, 'update': None}], 'triggers': None, 'failure': None, 'expression': 'dir == downstream &amp;&amp; rule_name == traffic_high'}, 'packet_volume_limiter.trigger.traffic_high_upstream': {'name': 'packet_volume_limiter.trigger.traffic_high_upstream', 'event': 'cci.interfaces.TrafficMonitor.traffic_volume_notification', 'condition': [{'dir': {'tosca.constraint.equal': 'upstream'}}, {'rule_name': {'tosca.constraint.equal': 'traffic_high'}}], 'target': ['cmts_adapter'], 'action': [{'call_operation': {'inputs': {'rate': {'$functionCall': {'arguments': [{'$value': 'upstream_rate_lower'}], 'column': -1, 'name': 'tosca.function.get_input', 'path': 'servicetemplate.policies{0}.triggerdefinitions["traffic_high_upstream"].action[0].calloperation.inputs["rate"]', 'row': -1, 'url': 'zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml'}, 'required': True}, 'sfid': {'$value': 123}}, 'interface': 'Standard', 'operation': 'modify'}, 'update': None}], 'triggers': None, 'failure': None, 'expression': 'dir == upstream &amp;&amp; rule_name == traffic_high'}, 'packet_volume_limiter.trigger.traffic_low_downstream': {'name': 'packet_volume_limiter.trigger.traffic_low_downstream', 'event': 'cci.interfaces.TrafficMonitor.traffic_volume_notification', 'condition': [{'dir': {'tosca.constraint.equal': 'downstream'}}, {'rule_name': {'tosca.constraint.equal': 'traffic_low'}}], 'target': ['cmts_adapter'], 'action': [{'call_operation': {'inputs': {'rate': {'$functionCall': {'arguments': [{'$value': 'downstream_rate_upper'}], 'column': -1, 'name': 'tosca.function.get_input', 'path': 'servicetemplate.policies{0}.triggerdefinitions["traffic_low_downstream"].action[0].calloperation.inputs["rate"]', 'row': -1, 'url': 'zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml'}, 'required': True}, 'sfid': {'$value': 123}}, 'interface': 'Standard', 'operation': 'modify'}, 'update': None}], 'triggers': None, 'failure': None, 'expression': 'dir == downstream &amp;&amp; rule_name == traffic_low'}, 'packet_volume_limiter.trigger.traffic_low_upstream': {'name': 'packet_volume_limiter.trigger.traffic_low_upstream', 'event': 'cci.interfaces.TrafficMonitor.traffic_volume_notification', 'condition': [{'dir': {'tosca.constraint.equal': 'upstream'}}, {'rule_name': {'tosca.constraint.equal': 'traffic_low'}}], 'target': ['cmts_adapter'], 'action': [{'call_operation': {'inputs': {'rate': {'$functionCall': {'arguments': [{'$value': 'upstream_rate_upper'}], 'column': -1, 'name': 'tosca.function.get_input', 'path': 'servicetemplate.policies{0}.triggerdefinitions["traffic_low_upstream"].action[0].calloperation.inputs["rate"]', 'row': -1, 'url': 'zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml'}, 'required': True}, 'sfid': {'$value': 123}}, 'interface': 'Standard', 'operation': 'modify'}, 'update': None}], 'triggers': None, 'failure': None, 'expression': 'dir == upstream &amp;&amp; rule_name == traffic_low'}}, 'triggers': [{'name': 'packet_volume_limiter.trigger.traffic_high_downstream', 'event': 'cci.interfaces.TrafficMonitor.traffic_volume_notification', 'condition': [{'dir': {'tosca.constraint.equal': 'downstream'}}, {'rule_name': {'tosca.constraint.equal': 'traffic_high'}}], 'target': ['cmts_adapter'], 'action': [{'call_operation': {'inputs': {'rate': {'$functionCall': {'arguments': [{'$value': 'downstream_rate_lower'}], 'column': -1, 'name': 'tosca.function.get_input', 'path': 'servicetemplate.policies{0}.triggerdefinitions["traffic_high_downstream"].action[0].calloperation.inputs["rate"]', 'row': -1, 'url': 'zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml'}, 'required': True}, 'sfid': {'$value': 123}}, 'interface': 'Standard', 'operation': 'modify'}, 'update': None}], 'triggers': None, 'failure': None, 'expression': 'dir == downstream &amp;&amp; rule_name == traffic_high'}, {'name': 'packet_volume_limiter.trigger.traffic_low_upstream', 'event': 'cci.interfaces.TrafficMonitor.traffic_volume_notification', 'condition': [{'dir': {'tosca.constraint.equal': 'upstream'}}, {'rule_name': {'tosca.constraint.equal': 'traffic_low'}}], 'target': ['cmts_adapter'], 'action': [{'call_operation': {'inputs': {'rate': {'$functionCall': {'arguments': [{'$value': 'upstream_rate_upper'}], 'column': -1, 'name': 'tosca.function.get_input', 'path': 'servicetemplate.policies{0}.triggerdefinitions["traffic_low_upstream"].action[0].calloperation.inputs["rate"]', 'row': -1, 'url': 'zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml'}, 'required': True}, 'sfid': {'$value': 123}}, 'interface': 'Standard', 'operation': 'modify'}, 'update': None}], 'triggers': None, 'failure': None, 'expression': 'dir == upstream &amp;&amp; rule_name == traffic_low'}, {'name': 'packet_volume_limiter.trigger.traffic_high_upstream', 'event': 'cci.interfaces.TrafficMonitor.traffic_volume_notification', 'condition': [{'dir': {'tosca.constraint.equal': 'upstream'}}, {'rule_name': {'tosca.constraint.equal': 'traffic_high'}}], 'target': ['cmts_adapter'], 'action': [{'call_operation': {'inputs': {'rate': {'$functionCall': {'arguments': [{'$value': 'upstream_rate_lower'}], 'column': -1, 'name': 'tosca.function.get_input', 'path': 'servicetemplate.policies{0}.triggerdefinitions["traffic_high_upstream"].action[0].calloperation.inputs["rate"]', 'row': -1, 'url': 'zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml'}, 'required': True}, 'sfid': {'$value': 123}}, 'interface': 'Standard', 'operation': 'modify'}, 'update': None}], 'triggers': None, 'failure': None, 'expression': 'dir == upstream &amp;&amp; rule_name == traffic_high'}, {'name': 'packet_volume_limiter.trigger.traffic_low_downstream', 'event': 'cci.interfaces.TrafficMonitor.traffic_volume_notification', 'condition': [{'dir': {'tosca.constraint.equal': 'downstream'}}, {'rule_name': {'tosca.constraint.equal': 'traffic_low'}}], 'target': ['cmts_adapter'], 'action': [{'call_operation': {'inputs': {'rate': {'$functionCall': {'arguments': [{'$value': 'downstream_rate_upper'}], 'column': -1, 'name': 'tosca.function.get_input', 'path': 'servicetemplate.policies{0}.triggerdefinitions["traffic_low_downstream"].action[0].calloperation.inputs["rate"]', 'row': -1, 'url': 'zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml'}, 'required': True}, 'sfid': {'$value': 123}}, 'interface': 'Standard', 'operation': 'modify'}, 'update': None}], 'triggers': None, 'failure': None, 'expression': 'dir == downstream &amp;&amp; rule_name == traffic_low'}]}}}</msg>
+<status status="PASS" starttime="20231005 17:43:08.700" endtime="20231005 17:43:08.701"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20231005 17:43:08.702" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20231005 17:43:08.701" endtime="20231005 17:43:08.702"/>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${response.json()['policies']['packet_volume_limiter']['name']}</arg>
+<arg>${instance-policy}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="PASS" starttime="20231005 17:43:08.702" endtime="20231005 17:43:08.703"/>
+</kw>
+<status status="PASS" starttime="20231005 17:42:58.658" endtime="20231005 17:43:08.703"/>
+</kw>
+<status status="PASS" starttime="20231005 17:42:58.221" endtime="20231005 17:43:08.703"/>
+</kw>
+<status status="PASS" starttime="20231005 17:42:58.221" endtime="20231005 17:43:08.703"/>
+</test>
+<status status="PASS" starttime="20231005 17:42:58.062" endtime="20231005 17:43:08.704"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" skip="0" id="s1" name="Main">Main</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

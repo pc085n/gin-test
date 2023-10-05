@@ -5,32 +5,36 @@ Library    Collections
 
 *** Variables ***
 
-#${aws} =  dcaf-cmts-demo
-${aws} =  tango
-#${model-name} =  dcaf_service
+${aws} =  amsterdam
 ${model-name} =  nonrtric
+#${model-name} =  nonrtric-cherry
 ${model-url} =  https://${aws}-apisix-gateway.cci-dev.com/compiler/v1/db/models
-${instance-name} =  dcaf91
+#${instance-name} =  rrtx1002
+${instance-name} =  pc085n
 ${instance-url} =  https://${aws}-apisix-gateway.cci-dev.com/so/v1/instances
+${base-url} =  https://${aws}-kiali.cci-dev.com/kiali
 
 *** Test Cases ***
 
 #COMPILER API#
 0#To access gin
-    ${response}=    GET  https://dcaf-cmts-demo-kiali.cci-dev.com/kiali
+    ${response}=  GET  https://dcaf-cmts-demo-kiali.cci-dev.com/kiali
 1#To get all models from database
 ##bypass verifying certificates
     Create Session    mysession    ${model-url}    verify=false
     ${response}=  GET On Session  mysession  /        
     log  ${response.json()}
     Should Be Equal As Strings  ${response.status_code}  200
-#    Should Contain  ${response.json()['message']}  TODO-PEARL
+#
+#    ${models}=    Get values from JSON    ${response.json()}    $..model_name
+#    Log To Console     models is${models}
+#    Should Contain    ${models}    sourcemodel8k8020-v1-8k
 2#To get deployable models from the database
     Create Session    mysession    ${model-url}    verify=false
     ${response}=  GET On Session  mysession  /deployablemodels    
     log  ${response.json()}
     Should Be Equal As Strings  ${response.status_code}  200
-#    Should Contain  ${response.json()['message']}  TODO-PEARL
+    Should Contain  ${response.json()['data']['models']}  ${model-name}.csar
 3#To get all models from database with metadata
     Create Session    mysession    ${model-url}    verify=false
     ${response}=  GET On Session  mysession  /metadata   
@@ -57,13 +61,13 @@ ${instance-url} =  https://${aws}-apisix-gateway.cci-dev.com/so/v1/instances
 #    Should Contain  ${response.json()['message']}  TODO-PEARL
 7#To get nodeTemplates from model
     Create Session    mysession    ${model-url}    verify=false
-    ${response}=  GET On Session  mysession  /${model-name}/nodetemplates    
+    ${response}=  GET On Session  mysession  /nonrtric/nodetemplates    
     log  ${response.json()}
     Should Be Equal As Strings  ${response.status_code}  200
-#    Should Contain  ${response.json()['message']}  TODO-PEARL
+    Should Contain  ${response.json()['data']['model'][0]['name']}  cluster
 8#To get substitution nodes from model
     Create Session    mysession    ${model-url}    verify=false
-    ${response}=  GET On Session  mysession  /${model-name}/abstract    
+    ${response}=  GET On Session  mysession  /main/abstract    
     log  ${response.json()}
     Should Be Equal As Strings  ${response.status_code}  200
 #    Should Contain  ${response.json()['message']}  TODO-PEARL
@@ -72,7 +76,7 @@ ${instance-url} =  https://${aws}-apisix-gateway.cci-dev.com/so/v1/instances
     ${response}=  GET On Session  mysession  /${model-name}/dangling_requirements    
     log  ${response.json()}
     Should Be Equal As Strings  ${response.status_code}  200
-#    Should Contain  ${response.json()['message']}  TODO-PEARL
+    Should Contain  ${response.json()['data'][0]['name']}  ${model-name}
 #10#To compile model-USE PERSONAL INSTANCE
 #11#To save model-USE PERSONAL INSTANCE
 #12#To delete a model-USE PERSONAL INSTANCE
@@ -89,7 +93,7 @@ ${instance-url} =  https://${aws}-apisix-gateway.cci-dev.com/so/v1/instances
     ${response}=  GET On Session  mysession  /${instance-name}    
     log  ${response.json()}
     Should Be Equal As Strings  ${response.status_code}  200
-#    Should Contain  ${response.json()['message']}  TODO-PEARL
+    Should Contain  ${response.json()['name']}  ${instance-name}
 22#To get all instances with deployed Instances from database
     Create Session    mysession    ${instance-url}    verify=false
     ${response}=  GET On Session  mysession  /deployedInstances    
@@ -101,7 +105,7 @@ ${instance-url} =  https://${aws}-apisix-gateway.cci-dev.com/so/v1/instances
     ${response}=  GET On Session  mysession  /${instance-name}/status   
     log  ${response.json()}
     Should Be True  '${response.status_code}'=='200' or '${response.status_code}'=='202'
-    Should Contain  ${response.json()['message']}  Instance Status
+    Should Contain  ${response.json()['modelname']}  nonrtric.csar
 24#To get all policies of an specific instance
     Create Session    mysession    ${instance-url}    verify=false
     ${response}=  GET On Session  mysession  /${instance-name}/policies    

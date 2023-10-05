@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.1.1 (Python 3.10.12 on linux)" generated="20231005 15:31:21.220" rpa="false" schemaversion="4">
+<suite id="s1" name="Temp" source="/opt/app/gin/temp.robot">
+<test id="s1-t1" name="25#To create instance-USE PERSONAL GIN" line="97">
+<kw name="Convert String To Json" library="JSONLibrary">
+<var>${save-body}</var>
+<arg>${instance-string}</arg>
+<doc>Convert String to JSON object</doc>
+<msg timestamp="20231005 15:31:21.364" level="INFO">${save-body} = {'name': 'malitpe', 'output': 'dcaf-cmts.json', 'generate-workflow': True, 'execute-workflow': True, 'list-steps-only': False, 'execute-policy': True, 'inputs': {'dcaf-input-resource': {'k8scluster_na...</msg>
+<status status="PASS" starttime="20231005 15:31:21.363" endtime="20231005 15:31:21.364"/>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>${instance-url}</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20231005 15:31:21.364" level="INFO">Creating Session using : alias=mysession, url=https://amsterdam-apisix-gateway.cci-dev.com/so/v1/instances, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20231005 15:31:21.364" endtime="20231005 15:31:21.365"/>
+</kw>
+<kw name="POST On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/createInstance</arg>
+<arg>json=${save-body}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<msg timestamp="20231005 15:31:32.820" level="INFO">POST Request : url=https://amsterdam-apisix-gateway.cci-dev.com/so/v1/instances/createInstance 
+ path_url=/so/v1/instances/createInstance 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '409', 'Content-Type': 'application/json'} 
+ body=b'{"name": "malitpe", "output": "dcaf-cmts.json", "generate-workflow": true, "execute-workflow": true, "list-steps-only": false, "execute-policy": true, "inputs": {"dcaf-input-resource": {"k8scluster_name": "dcaf"}, "cluster": {"cluster-input-resource": {"cluster_name": "dcaf"}}, "ves-collector": {"k8scluster_name": "dcaf"}}, "inputsUrl": "", "service": "zip:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml"}' 
+ </msg>
+<msg timestamp="20231005 15:31:32.820" level="INFO">POST Response : url=https://amsterdam-apisix-gateway.cci-dev.com/so/v1/instances/createInstance 
+ status=202, reason=Accepted 
+ headers={'Content-Length': '161', 'Content-Type': 'application/json', 'Date': 'Thu, 05 Oct 2023 15:31:32 GMT', 'Server': 'APISIX/3.5.0'} 
+ body={"result":"Success","message":"Instance 'malitpe' will be deployed along with following dependent models:","data":["cluster-resource","cluster","dcaf-resource"]} 
+ </msg>
+<msg timestamp="20231005 15:31:32.820" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'amsterdam-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20231005 15:31:32.821" level="INFO">${response} = &lt;Response [202]&gt;</msg>
+<status status="PASS" starttime="20231005 15:31:21.365" endtime="20231005 15:31:32.821"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231005 15:31:32.822" level="INFO">{'result': 'Success', 'message': "Instance 'malitpe' will be deployed along with following dependent models:", 'data': ['cluster-resource', 'cluster', 'dcaf-resource']}</msg>
+<status status="PASS" starttime="20231005 15:31:32.821" endtime="20231005 15:31:32.822"/>
+</kw>
+<kw name="Should Be True" library="BuiltIn">
+<arg>'${response.status_code}'=='200' or '${response.status_code}'=='202'</arg>
+<doc>Fails if the given condition is not true.</doc>
+<status status="PASS" starttime="20231005 15:31:32.822" endtime="20231005 15:31:32.824"/>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${response.json()['message']}</arg>
+<arg>will be deployed</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="PASS" starttime="20231005 15:31:32.824" endtime="20231005 15:31:32.825"/>
+</kw>
+<status status="PASS" starttime="20231005 15:31:21.363" endtime="20231005 15:31:32.825"/>
+</test>
+<test id="s1-t2" name="26#To execute workflow steps of a model which has already been saved in the database-USE PERSONAL GIN" line="104">
+<kw name="Convert String To Json" library="JSONLibrary">
+<var>${deploy-body}</var>
+<arg>${instance-wf-string}</arg>
+<doc>Convert String to JSON object</doc>
+<msg timestamp="20231005 15:31:32.826" level="INFO">${deploy-body} = {'list-steps-only': False, 'execute-policy': True}</msg>
+<status status="PASS" starttime="20231005 15:31:32.826" endtime="20231005 15:31:32.827"/>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<arg>mysession</arg>
+<arg>${instance-url}</arg>
+<arg>verify=false</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20231005 15:31:32.827" level="INFO">Creating Session using : alias=mysession, url=https://amsterdam-apisix-gateway.cci-dev.com/so/v1/instances, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20231005 15:31:32.827" endtime="20231005 15:31:32.827"/>
+</kw>
+<kw name="POST On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/${instance-name}/workflows/deploy</arg>
+<arg>json=${deploy-body}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<msg timestamp="20231005 15:31:32.944" level="INFO">POST Request : url=https://amsterdam-apisix-gateway.cci-dev.com/so/v1/instances/malitpe/workflows/deploy 
+ path_url=/so/v1/instances/malitpe/workflows/deploy 
+ headers={'User-Agent': 'python-requests/2.25.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '50', 'Content-Type': 'application/json'} 
+ body=b'{"list-steps-only": false, "execute-policy": true}' 
+ </msg>
+<msg timestamp="20231005 15:31:32.944" level="INFO">POST Response : url=https://amsterdam-apisix-gateway.cci-dev.com/so/v1/instances/malitpe/workflows/deploy 
+ status=200, reason=OK 
+ headers={'Content-Length': '69', 'Content-Type': 'application/json', 'Date': 'Thu, 05 Oct 2023 15:31:32 GMT', 'Server': 'APISIX/3.5.0'} 
+ body={"result":"Success","message":"Instance 'malitpe' will be deployed."} 
+ </msg>
+<msg timestamp="20231005 15:31:32.944" level="INFO">/usr/lib/python3/dist-packages/urllib3/connectionpool.py:1015: InsecureRequestWarning: Unverified HTTPS request is being made to host 'amsterdam-apisix-gateway.cci-dev.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20231005 15:31:32.944" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20231005 15:31:32.827" endtime="20231005 15:31:32.944"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231005 15:31:32.946" level="INFO">{'result': 'Success', 'message': "Instance 'malitpe' will be deployed."}</msg>
+<status status="PASS" starttime="20231005 15:31:32.945" endtime="20231005 15:31:32.946"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20231005 15:31:32.946" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20231005 15:31:32.946" endtime="20231005 15:31:32.947"/>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${response.json()['message']}</arg>
+<arg>will be deployed</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="PASS" starttime="20231005 15:31:32.947" endtime="20231005 15:31:32.947"/>
+</kw>
+<status status="PASS" starttime="20231005 15:31:32.826" endtime="20231005 15:31:32.948"/>
+</test>
+<status status="PASS" starttime="20231005 15:31:21.221" endtime="20231005 15:31:32.949"/>
+</suite>
+<statistics>
+<total>
+<stat pass="2" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="2" fail="0" skip="0" id="s1" name="Temp">Temp</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
