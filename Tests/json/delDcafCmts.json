@@ -1,0 +1,5 @@
+{
+"namespace": "zip:file:/opt/app/csars/dcaf-cmts.csar!/dcaf_service.yaml",
+"version": "tick_profile_1_0",
+"includeTypes": true
+}

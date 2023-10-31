@@ -1,0 +1,21 @@
+{
+"name": "dcaf2-rbtest3",
+"output": "dcaf2-rbtest3.yaml",
+"generate-workflow": true,
+"execute-workflow": true,
+"list-steps-only": false,
+"execute-policy": true,
+"inputs": {
+"dcaf-input-resource": {
+"k8scluster_name": "dcaf"
+},
+"helm": {
+"helm_version": "3.5.2"
+},
+"ves-collector": {
+"k8scluster_name": "dcaf"
+}
+},
+"inputsUrl": "",
+"service": "zip:/opt/app/csars/dcaf2.csar!/dcaf_service.yaml"
+}

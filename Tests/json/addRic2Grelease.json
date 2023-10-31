@@ -1,0 +1,35 @@
+{
+"name": "ric2-grelease-rbtest4",
+"output": "ric2-grelease-rbtest4.yaml",
+"generate-workflow": true,
+"execute-workflow": true,
+"list-steps-only": false,
+"execute-policy": true,
+"inputs": {
+"cluster": {
+"cloud_type": "aws",
+"cluster-input-resource": {
+"availability_zone": "us-east-2b",
+"cluster_name": "ric",
+"existing_cluster_ip": "existing_cluster_ip",
+"existing_vpc_id": "vpc-9be007f3",
+"image_id": "ami-00978328f54e31526",
+"instance_type": "t2.large",
+"network_name": "cluster-vpc",
+"region_name": "us-east-2",
+"site_name": "cluster-server",
+"subnet_cidr": "172.31.64.0/20",
+"subnet_name": "cluster-subnet",
+"use_existing_vpc": "true",
+"vpc_cidr_block": "172.31.0.0/16"
+},
+"new_cluster": "false",
+"region_name": "us-east-1"
+},
+"ric2-grelease": {
+"k8scluster_name": "ric"
+}
+},
+"inputsUrl": "",
+"service": "zip:/opt/app/csars/ric2-grelease.csar!/ric2.yaml"
+}

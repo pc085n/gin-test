@@ -1,0 +1,12 @@
+{
+"url": "TBD",
+"resolve": true,
+"coerce": false,
+"quirks": [
+"data_types.string.permissive"
+],
+"output": "TBD",
+"inputs": "",
+"inputsUrl": "",
+"force": true
+}

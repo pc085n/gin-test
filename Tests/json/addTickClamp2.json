@@ -1,0 +1,25 @@
+{
+"name": "tickclamp2-rbtest1",
+"output": "tickclamp2-rbtest1.yaml",
+"generate-workflow": true,
+"execute-workflow": true,
+"list-steps-only": false,
+"execute-policy": true,
+"inputs": {
+"helm": {
+"helm_version": "3.5.2"
+},
+"tick-cluster": {
+"number_of_workers": 1,
+"cluster_name": "tick",
+"cloud_provider": "aws",
+"region_name": "us-east-2"
+},
+"tickclamp2": {
+"helm_version": "3.5.2",
+"k8scluster_name": "tick"
+}
+},
+"inputsUrl": "",
+"service": "zip:/opt/app/csars/tickclamp2.csar!/clamp_service.yaml"
+}

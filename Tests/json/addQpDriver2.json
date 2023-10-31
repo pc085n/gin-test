@@ -1,0 +1,19 @@
+{
+"name": "qp-driver2-rbtest1",
+"output": "qp-driver2-rbtest1.yaml",
+"generate-workflow": true,
+"execute-workflow": true,
+"list-steps-only": false,
+"execute-policy": true,
+"inputs": {
+"k8scluster_name": "ric",
+"cluster": {
+"region_name": "us-east-2",
+"cluster-input-resource": {
+"cluster_name": "ric"
+}
+}
+},
+"inputsUrl": "",
+"service": "zip:/opt/app/csars/qp-driver2.csar!/qp-driver2.yaml"
+}

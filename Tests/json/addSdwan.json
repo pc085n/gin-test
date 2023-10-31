@@ -1,0 +1,10 @@
+{
+"name": "sdwan-rbtest1",
+"output": "sdwan-rbtest1.yaml",
+"generate-workflow": true,
+"execute-workflow": true,
+"list-steps-only": false,
+"execute-policy": true,
+"inputsUrl": "",
+"service": "zip:/opt/app/csars/sdwan.csar!/sdwan_service.yaml"
+}

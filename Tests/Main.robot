@@ -9,39 +9,39 @@ Library    Collections
 SetUp Schema
     Create Schema
 SetUp MOdel
-    Save Model
-    Compile Model
+    Loop over list of models and save each model
+    Loop over list of models and compile each model
 SetUp Instance
-    Create Instance
-    Execute Workflow
+    Loop over list of deployable models and create instance
+    Loop over list of instances and execute workflow
 Query Data
 #    Access GIN
     Get All Models From DB
     Get Deployable Models From DB
     Get All Models From DB With MetaData
-    Get Specific TOSCA Model Data
+    Loop and get specific TOSCA Model Data
     Get NodeTemplates Based On Substitute
     Get NodeTemplates Based on Select
-    Get NodeTemplates From Model
-    Get Substitution Nodes From Model
-    Find Dangling Requirements Of Given Model
+    Loop and get NodeTemplates From Model
+    Loop and get Substitution Nodes From Model
+    Loop and find Dangling Requirements Of Given Model
 #
     Get All Instances From DB
     Get Specific Instance From DB
     Get All Instances With Deployed Instances From DB
-    Get Status of Specific Instance
-    Get All Policies Of Specific Instance
+    Loop and get Status of Specific Instance
+    Loop and get All Policies Of Specific Instance
 TearDown Instance
     Delete Policy
-    Delete Instance
+    Loop over list of instances and delete each instance
 TearDown Model
-    Delete Model
+    Loop over list of models and delete each model
 
 *** Test Cases ***
 Validate GIN deployment
 #    Setup Schema
 #    SetUp Model
 #    SetUp Instance
-#    Query Data
+    Query Data
 #    TearDown Instance
-    TearDown Model
+#    TearDown Model

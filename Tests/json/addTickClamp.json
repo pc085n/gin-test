@@ -1,0 +1,13 @@
+{
+"name": "tickclamp-rbtest1",
+"output": "tickclamp-rbtest1.yaml",
+"generate-workflow": true,
+"execute-workflow": true,
+"list-steps-only": false,
+"execute-policy": true,
+"inputs": {
+"k8scluster_name": "tick"
+},
+"inputsUrl": "",
+"service": "zip:/opt/app/csars/tickclamp.csar!/clamp_service.yaml"
+}

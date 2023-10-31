@@ -1,0 +1,10 @@
+{
+"name": "nonrtric-cherry-rbtest1",
+"output": "nonrtric-cherry-rbtest1.yaml",
+"generate-workflow": true,
+"execute-workflow": true,
+"list-steps-only": false,
+"execute-policy": true,
+"inputsUrl": "",
+"service": "zip:/opt/app/csars/nonrtric-cherry.csar!/nonrtric.yaml"
+}

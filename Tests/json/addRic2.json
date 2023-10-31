@@ -1,0 +1,20 @@
+{
+"name": "ric2-rbtest3",
+"output": "ric2-rbtest3.yaml",
+"generate-workflow": true,
+"execute-workflow": true,
+"list-steps-only": false,
+"execute-policy": true,
+"inputs": {
+"ric2": {
+"k8scluster_name": "ric"
+},
+"cluster": {
+"cluster-input-resource": {
+"cluster_name": "ric"
+}
+}
+},
+"inputsUrl": "",
+"service": "zip:/opt/app/csars/ric2.csar!/ric2.yaml"
+}

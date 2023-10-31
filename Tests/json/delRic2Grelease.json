@@ -1,0 +1,5 @@
+{
+"namespace": "zip:file:/opt/app/csars/ric2-grelease.csar!/ric2.yaml",
+"version": "tosca_simple_yaml_1_3",
+"includeTypes": true
+}

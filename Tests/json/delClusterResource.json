@@ -1,0 +1,5 @@
+{
+"namespace": "zip:file:/opt/app/csars/cluster-resource.csar!/cluster_input_service.yaml",
+"version": "tosca_simple_yaml_1_3",
+"includeTypes": true
+}
